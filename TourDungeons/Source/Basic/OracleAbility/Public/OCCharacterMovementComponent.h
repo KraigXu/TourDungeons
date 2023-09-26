@@ -20,25 +20,25 @@ class UOCCharacterMovementComponent : public UCharacterMovementComponent
 
 		typedef FSavedMove_Character Super;
 
-		///@brief Resets all saved variables.
+		///@brief 重置所有保存的变量。
 		virtual void Clear() override;
 
-		///@brief Store input commands in the compressed flags.
+		///@brief 在压缩标志中存储输入命令。
 		virtual uint8 GetCompressedFlags() const override;
 
-		///@brief This is used to check whether or not two moves can be combined into one.
-		///Basically you just check to make sure that the saved variables are the same.
+		///@brief用于检查两个动作是否可以合并为一个。
+		///基本上你只是检查，以确保保存的变量是相同的。
 		virtual bool CanCombineWith(const FSavedMovePtr& NewMove, ACharacter* Character, float MaxDelta) const override;
 
-		///@brief Sets up the move before sending it to the server. 
+		///@brief 在将移动发送到服务器之前对其进行设置。
 		virtual void SetMoveFor(ACharacter* Character, float InDeltaTime, FVector const& NewAccel, class FNetworkPredictionData_Client_Character & ClientData) override;
-		///@brief Sets variables on character movement component before making a predictive correction.
+		///@brief 在进行预测修正之前设置角色移动组件的变量。
 		virtual void PrepMoveFor(class ACharacter* Character) override;
 
 		// Sprint
 		uint8 SavedRequestToStartSprinting : 1;
 
-		// Aim Down Sights
+		// 向下瞄准
 		uint8 SavedRequestToStartADS : 1;
 	};
 
