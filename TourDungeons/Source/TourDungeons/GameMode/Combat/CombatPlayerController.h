@@ -7,9 +7,7 @@
 #include "CombatPlayerController.generated.h"
 
 
-/**
- * 综合模拟演练玩家控制器
- */
+
 UCLASS(BlueprintType)
 class ACombatPlayerController : public APlayerController
 {
