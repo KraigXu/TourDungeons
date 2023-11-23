@@ -1,5 +1,19 @@
-TourDungeons/Binaries/
-TourDungeons/Intermediate/
-TourDungeons/Saved/
-TourDungeons/.vs/
-TourDungeons/.idea/
+#Unreal Engine
+Binaries
+DerivedDataCache
+Intermediate
+Saved
+Config/SteamVRBindings
+Content/Collections
+Content/Developers
+Build
+.vscode
+.vs
+.vsconfig
+.idea
+*.sln
+*.user
+steamvr_ue_editor_app.json
+
+#BlueprintAssist
+Plugins/BlueprintAssist/NodeSizeCache
