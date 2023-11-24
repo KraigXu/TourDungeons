@@ -5,12 +5,10 @@
 #include "FateIronPro/AbilitySystem/FIAbilitySystemComponent.h"
 #include "AbilitySystemLog.h"
 #include "FateIronPro/FIGameplayTags.h"
-#include "FateIronPro/AbilitySystem/FIAbilityCost.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemGlobals.h"
+#include "FIAbilityCost.h"
 #include "GameFramework/PlayerState.h"
-
-
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(FIGameplayAbility)
 
