@@ -25,6 +25,7 @@
 // #include "Player/LyraPlayerSpawningManagerComponent.h"
 // #include "CommonUserSubsystem.h"
 // #include "CommonSessionSubsystem.h"
+#include "FIDungeonModeManagerComponent.h"
 #include "TimerManager.h"
 #include "GameMapsSettings.h"
 #include "FateIronPro/FILogChannels.h"
@@ -64,7 +65,7 @@ const UFIPawnData* AFIDungeonGameMode::GetPawnDataForController(const AControlle
 	//
 	// if (ExperienceComponent->IsExperienceLoaded())
 	// {
-	// 	const ULyraExperienceDefinition* Experience = ExperienceComponent->GetCurrentExperienceChecked();
+	// 	const UFIExperienceDefinition* Experience = ExperienceComponent->GetCurrentExperienceChecked();
 	// 	if (Experience->DefaultPawnData != nullptr)
 	// 	{
 	// 		return Experience->DefaultPawnData;
@@ -88,24 +89,24 @@ void AFIDungeonGameMode::InitGame(const FString& MapName, const FString& Options
 
 void AFIDungeonGameMode::HandleMatchAssignmentIfNotExpectingOne()
 {
-	// FPrimaryAssetId ExperienceId;
-	// FString ExperienceIdSource;
-	//
-	// // Precedence order (highest wins)
-	// //  - Matchmaking assignment (if present)
-	// //  - URL Options override
-	// //  - Developer Settings (PIE only)
-	// //  - Command Line override
-	// //  - World Settings
-	// //  - Dedicated server
-	// //  - Default experience
-	//
+	FPrimaryAssetId ExperienceId;
+	FString ExperienceIdSource;
+	
+	// Precedence order (highest wins)
+	//  - Matchmaking assignment (if present)
+	//  - URL Options override
+	//  - Developer Settings (PIE only)
+	//  - Command Line override
+	//  - World Settings
+	//  - Dedicated server
+	//  - Default experience
+	
 	// UWorld* World = GetWorld();
 	//
 	// if (!ExperienceId.IsValid() && UGameplayStatics::HasOption(OptionsString, TEXT("Experience")))
 	// {
 	// 	const FString ExperienceFromOptions = UGameplayStatics::ParseOption(OptionsString, TEXT("Experience"));
-	// 	ExperienceId = FPrimaryAssetId(FPrimaryAssetType(ULyraExperienceDefinition::StaticClass()->GetFName()), FName(*ExperienceFromOptions));
+	// 	ExperienceId = FPrimaryAssetId(FPrimaryAssetType(UFIExperienceDefinition::StaticClass()->GetFName()), FName(*ExperienceFromOptions));
 	// 	ExperienceIdSource = TEXT("OptionsString");
 	// }
 	//
@@ -124,7 +125,7 @@ void AFIDungeonGameMode::HandleMatchAssignmentIfNotExpectingOne()
 	// 		ExperienceId = FPrimaryAssetId::ParseTypeAndName(ExperienceFromCommandLine);
 	// 		if (!ExperienceId.PrimaryAssetType.IsValid())
 	// 		{
-	// 			ExperienceId = FPrimaryAssetId(FPrimaryAssetType(ULyraExperienceDefinition::StaticClass()->GetFName()), FName(*ExperienceFromCommandLine));
+	// 			ExperienceId = FPrimaryAssetId(FPrimaryAssetType(UFIExperienceDefinition::StaticClass()->GetFName()), FName(*ExperienceFromCommandLine));
 	// 		}
 	// 		ExperienceIdSource = TEXT("CommandLine");
 	// 	}
@@ -144,7 +145,7 @@ void AFIDungeonGameMode::HandleMatchAssignmentIfNotExpectingOne()
 	// FAssetData Dummy;
 	// if (ExperienceId.IsValid() && !AssetManager.GetPrimaryAssetData(ExperienceId, /*out*/ Dummy))
 	// {
-	// 	UE_LOG(LogLyraExperience, Error, TEXT("EXPERIENCE: Wanted to use %s but couldn't find it, falling back to the default)"), *ExperienceId.ToString());
+	// 	UE_LOG(LogFIExperience, Error, TEXT("EXPERIENCE: Wanted to use %s but couldn't find it, falling back to the default)"), *ExperienceId.ToString());
 	// 	ExperienceId = FPrimaryAssetId();
 	// }
 	//
@@ -162,7 +163,7 @@ void AFIDungeonGameMode::HandleMatchAssignmentIfNotExpectingOne()
 	// 	ExperienceIdSource = TEXT("Default");
 	// }
 	//
-	// OnMatchAssignmentGiven(ExperienceId, ExperienceIdSource);
+	OnMatchAssignmentGiven(ExperienceId, ExperienceIdSource);
 }
 
 bool AFIDungeonGameMode::TryDedicatedServerLogin()
@@ -291,21 +292,21 @@ void AFIDungeonGameMode::HostDedicatedServerMatch(ECommonSessionOnlineMode Onlin
 
 void AFIDungeonGameMode::OnMatchAssignmentGiven(FPrimaryAssetId ExperienceId, const FString& ExperienceIdSource)
 {
-	// if (ExperienceId.IsValid())
-	// {
-	// 	UE_LOG(LogLyraExperience, Log, TEXT("Identified experience %s (Source: %s)"), *ExperienceId.ToString(), *ExperienceIdSource);
-	//
-	// 	ULyraExperienceManagerComponent* ExperienceComponent = GameState->FindComponentByClass<ULyraExperienceManagerComponent>();
-	// 	check(ExperienceComponent);
-	// 	ExperienceComponent->SetCurrentExperience(ExperienceId);
-	// }
-	// else
-	// {
-	// 	UE_LOG(LogFI, Error, TEXT("Failed to identify experience, loading screen will stay up forever"));
-	// }
+	if (ExperienceId.IsValid())
+	{
+		UE_LOG(LogFIExperience, Log, TEXT("Identified experience %s (Source: %s)"), *ExperienceId.ToString(), *ExperienceIdSource);
+	
+		UFIDungeonModeManagerComponent* ExperienceComponent = GameState->FindComponentByClass<UFIDungeonModeManagerComponent>();
+		check(ExperienceComponent);
+		ExperienceComponent->SetCurrentExperience(ExperienceId);
+	}
+	else
+	{
+		UE_LOG(LogFI, Error, TEXT("Failed to identify experience, loading screen will stay up forever"));
+	}
 }
 
-void AFIDungeonGameMode::OnExperienceLoaded(const ULyraExperienceDefinition* CurrentExperience)
+void AFIDungeonGameMode::OnExperienceLoaded(const UFIExperienceDefinition* CurrentExperience)
 {
 	// Spawn any players that are already attached
 	//@TODO: Here we're handling only *player* controllers, but in GetDefaultPawnClassForController_Implementation we skipped all controllers
@@ -326,11 +327,10 @@ void AFIDungeonGameMode::OnExperienceLoaded(const ULyraExperienceDefinition* Cur
 bool AFIDungeonGameMode::IsExperienceLoaded() const
 {
 	check(GameState);
-	//ULyraExperienceManagerComponent* ExperienceComponent = GameState->FindComponentByClass<ULyraExperienceManagerComponent>();
-	//check(ExperienceComponent);
+	UFIDungeonModeManagerComponent* ExperienceComponent = GameState->FindComponentByClass<UFIDungeonModeManagerComponent>();
+	check(ExperienceComponent);
 
-	//return ExperienceComponent->IsExperienceLoaded();
-	return false;
+	return ExperienceComponent->IsExperienceLoaded();
 }
 
 UClass* AFIDungeonGameMode::GetDefaultPawnClassForController_Implementation(AController* InController)

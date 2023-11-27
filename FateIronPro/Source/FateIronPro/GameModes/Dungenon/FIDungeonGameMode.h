@@ -12,7 +12,7 @@ class AGameModeBase;
 class APawn;
 class APlayerController;
 class UClass;
-class ULyraExperienceDefinition;
+class UFIExperienceDefinition;
 class UFIPawnData;
 class UObject;
 struct FFrame;
@@ -70,7 +70,7 @@ public:
 	FOnLyraGameModePlayerInitialized OnGameModePlayerInitialized;
 
 protected:	
-	void OnExperienceLoaded(const ULyraExperienceDefinition* CurrentExperience);
+	void OnExperienceLoaded(const UFIExperienceDefinition* CurrentExperience);
 	bool IsExperienceLoaded() const;
 
 	void OnMatchAssignmentGiven(FPrimaryAssetId ExperienceId, const FString& ExperienceIdSource);

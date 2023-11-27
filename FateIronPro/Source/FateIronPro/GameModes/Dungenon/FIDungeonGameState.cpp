@@ -2,6 +2,7 @@
 
 #include "FIDungeonGameState.h"
 
+#include "FIDungeonModeManagerComponent.h"
 #include "Async/TaskGraphInterfaces.h"
 #include "FateIronPro/FILogChannels.h"
 #include "FateIronPro/AbilitySystem/FIAbilitySystemComponent.h"
@@ -25,7 +26,7 @@ AFIDungeonGameState::AFIDungeonGameState(const FObjectInitializer& ObjectInitial
 	AbilitySystemComponent->SetIsReplicated(true);
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
 
-	ExperienceManagerComponent = CreateDefaultSubobject<ULyraExperienceManagerComponent>(TEXT("ExperienceManagerComponent"));
+	ExperienceManagerComponent = CreateDefaultSubobject<UFIDungeonModeManagerComponent>(TEXT("ExperienceManagerComponent"));
 
 	ServerFPS = 0.0f;
 }

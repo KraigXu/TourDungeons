@@ -21,7 +21,9 @@ public class FateIronPro : ModuleRules
 				"GameplayAbilities",
 				"AIModule",
 				"ModularGameplay",
-				"ModularGameplayActors"
+				"ModularGameplayActors",
+				"CommonLoadingScreen",
+				"GameFeatures"
 			});
 
 		PrivateDependencyModuleNames.AddRange(
@@ -31,7 +33,9 @@ public class FateIronPro : ModuleRules
 	            "Slate",
 	            "SlateCore",
 	            "RenderCore",
-	            "UMG"
+	            "UMG",
+	            "CommonGame",
+	            "CommonUser"
             });
 
 		// Uncomment if you are using Slate UI

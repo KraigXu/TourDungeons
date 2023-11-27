@@ -6,10 +6,11 @@
 #include "ModularGameState.h"
 
 #include "FIDungeonGameState.generated.h"
-//
+
 // struct FLyraVerbMessage;
 
 class APlayerState;
+class UFIDungeonModeManagerComponent;
 class UAbilitySystemComponent;
 class UFIAbilitySystemComponent;
 class UObject;
@@ -74,9 +75,9 @@ public:
 	FOnRecorderPlayerStateChanged OnRecorderPlayerStateChangedEvent;
 
 private:
-	// // Handles loading and managing the current gameplay experience
-	// UPROPERTY()
-	// TObjectPtr<ULyraExperienceManagerComponent> ExperienceManagerComponent;
+	// Handles loading and managing the current gameplay experience
+	UPROPERTY()
+	TObjectPtr<UFIDungeonModeManagerComponent> ExperienceManagerComponent;
 
 	// The ability system component subobject for game-wide things (primarily gameplay cues)
 	UPROPERTY(VisibleAnywhere, Category = "Lyra|GameState")
