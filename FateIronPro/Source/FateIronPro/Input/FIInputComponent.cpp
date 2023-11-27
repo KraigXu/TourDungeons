@@ -13,28 +13,28 @@ class UFIInputConfig;
 UFIInputComponent::UFIInputComponent(const FObjectInitializer& ObjectInitializer)
 {
 }
-//
-// void UFIInputComponent::AddInputMappings(const UFIInputConfig* InputConfig, UEnhancedInputLocalPlayerSubsystem* InputSubsystem) const
-// {
-// 	check(InputConfig);
-// 	check(InputSubsystem);
-//
-// 	// Here you can handle any custom logic to add something from your input config if required
-// }
-//
-// void UFIInputComponent::RemoveInputMappings(const UFIInputConfig* InputConfig, UEnhancedInputLocalPlayerSubsystem* InputSubsystem) const
-// {
-// 	check(InputConfig);
-// 	check(InputSubsystem);
-//
-// 	// Here you can handle any custom logic to remove input mappings that you may have added above
-// }
-//
-// void UFIInputComponent::RemoveBinds(TArray<uint32>& BindHandles)
-// {
-// 	for (uint32 Handle : BindHandles)
-// 	{
-// 		RemoveBindingByHandle(Handle);
-// 	}
-// 	BindHandles.Reset();
-// }
+
+void UFIInputComponent::AddInputMappings(const UFIInputConfig* InputConfig, UEnhancedInputLocalPlayerSubsystem* InputSubsystem) const
+ {
+ 	check(InputConfig);
+ 	check(InputSubsystem);
+
+ 	// Here you can handle any custom logic to add something from your input config if required
+ }
+
+void UFIInputComponent::RemoveInputMappings(const UFIInputConfig* InputConfig, UEnhancedInputLocalPlayerSubsystem* InputSubsystem) const
+ {
+ 	check(InputConfig);
+ 	check(InputSubsystem);
+
+ 	// Here you can handle any custom logic to remove input mappings that you may have added above
+ }
+
+ void UFIInputComponent::RemoveBinds(TArray<uint32>& BindHandles)
+ {
+ 	for (uint32 Handle : BindHandles)
+ 	{
+ 		RemoveBindingByHandle(Handle);
+ 	}
+ 	BindHandles.Reset();
+ }

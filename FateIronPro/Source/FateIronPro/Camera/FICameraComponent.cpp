@@ -6,7 +6,7 @@
 #include "Engine/Engine.h"
 #include "GameFramework/Pawn.h"
 #include "GameFramework/PlayerController.h"
-// #include "LyraCameraMode.h"
+#include "FICameraMode.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(FICameraComponent)
 

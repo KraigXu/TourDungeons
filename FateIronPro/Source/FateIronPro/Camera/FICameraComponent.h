@@ -8,8 +8,8 @@
 #include "FICameraComponent.generated.h"
 
 class UCanvas;
-// class ULyraCameraMode;
-// class ULyraCameraModeStack;
+class UFICameraMode;
+class ULyraCameraModeStack;
 class UObject;
 struct FFrame;
 struct FGameplayTag;
@@ -17,7 +17,6 @@ struct FMinimalViewInfo;
 template <class TClass> class TSubclassOf;
 
 // DECLARE_DELEGATE_RetVal(TSubclassOf<ULyraCameraMode>, FLyraCameraModeDelegate);
-
 
 /**
  * UFICameraComponent

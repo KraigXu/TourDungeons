@@ -5,8 +5,11 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "FICharacterMovementComponent.h"
+#include "FIHealthComponent.h"
+#include "FIPawnExtensionComponent.h"
 #include "Net/UnrealNetwork.h"
 #include "TimerManager.h"
+#include "Camera/FICameraComponent.h"
 #include "FateIronPro/FIGameplayTags.h"
 #include "FateIronPro/FILogChannels.h"
 #include "FateIronPro/AbilitySystem/FIAbilitySystemComponent.h"
@@ -54,17 +57,17 @@ AFICharacter::AFICharacter(const FObjectInitializer& ObjectInitializer)
 	LyraMoveComp->GetNavAgentPropertiesRef().bCanCrouch = true;
 	LyraMoveComp->bCanWalkOffLedgesWhenCrouching = true;
 	LyraMoveComp->SetCrouchedHalfHeight(65.0f);
-//
-	//PawnExtComponent = CreateDefaultSubobject<UFIPawnExtensionComponent>(TEXT("PawnExtensionComponent"));
-	//PawnExtComponent->OnAbilitySystemInitialized_RegisterAndCall(FSimpleMulticastDelegate::FDelegate::CreateUObject(this, &ThisClass::OnAbilitySystemInitialized));
-	//PawnExtComponent->OnAbilitySystemUninitialized_Register(FSimpleMulticastDelegate::FDelegate::CreateUObject(this, &ThisClass::OnAbilitySystemUninitialized));
-//
-	//HealthComponent = CreateDefaultSubobject<UFIHealthComponent>(TEXT("HealthComponent"));
-	//HealthComponent->OnDeathStarted.AddDynamic(this, &ThisClass::OnDeathStarted);
-	//HealthComponent->OnDeathFinished.AddDynamic(this, &ThisClass::OnDeathFinished);
-//
-	//CameraComponent = CreateDefaultSubobject<UFICameraComponent>(TEXT("CameraComponent"));
-	//CameraComponent->SetRelativeLocation(FVector(-300.0f, 0.0f, 75.0f));
+	
+	PawnExtComponent = CreateDefaultSubobject<UFIPawnExtensionComponent>(TEXT("PawnExtensionComponent"));
+	PawnExtComponent->OnAbilitySystemInitialized_RegisterAndCall(FSimpleMulticastDelegate::FDelegate::CreateUObject(this, &ThisClass::OnAbilitySystemInitialized));
+	PawnExtComponent->OnAbilitySystemUninitialized_Register(FSimpleMulticastDelegate::FDelegate::CreateUObject(this, &ThisClass::OnAbilitySystemUninitialized));
+
+	HealthComponent = CreateDefaultSubobject<UFIHealthComponent>(TEXT("HealthComponent"));
+	HealthComponent->OnDeathStarted.AddDynamic(this, &ThisClass::OnDeathStarted);
+	HealthComponent->OnDeathFinished.AddDynamic(this, &ThisClass::OnDeathFinished);
+
+	CameraComponent = CreateDefaultSubobject<UFICameraComponent>(TEXT("CameraComponent"));
+	CameraComponent->SetRelativeLocation(FVector(-300.0f, 0.0f, 75.0f));
 
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = true;
@@ -245,21 +248,21 @@ void AFICharacter::OnRep_Controller()
 {
 	Super::OnRep_Controller();
 
-	//PawnExtComponent->HandleControllerChanged();
+	PawnExtComponent->HandleControllerChanged();
 }
 
 void AFICharacter::OnRep_PlayerState()
 {
 	Super::OnRep_PlayerState();
 
-	//PawnExtComponent->HandlePlayerStateReplicated();
+	PawnExtComponent->HandlePlayerStateReplicated();
 }
 
 void AFICharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	//PawnExtComponent->SetupPlayerInputComponent();
+	PawnExtComponent->SetupPlayerInputComponent();
 }
 
 void AFICharacter::InitializeGameplayTags()
@@ -328,7 +331,7 @@ bool AFICharacter::HasAnyMatchingGameplayTags(const FGameplayTagContainer& TagCo
 
 void AFICharacter::FellOutOfWorld(const class UDamageType& dmgType)
 {
-	//HealthComponent->DamageSelfDestruct(/*bFellOutOfWorld=*/ true);
+	HealthComponent->DamageSelfDestruct(/*bFellOutOfWorld=*/ true);
 }
 
 void AFICharacter::OnDeathStarted(AActor*)
@@ -380,7 +383,7 @@ void AFICharacter::UninitAndDestroy()
 	{
 		if (LyraASC->GetAvatarActor() == this)
 		{
-			//PawnExtComponent->UninitializeAbilitySystem();
+			PawnExtComponent->UninitializeAbilitySystem();
 		}
 	}
 

@@ -188,14 +188,14 @@ protected:
 
 private:
 
-	// UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "FI|Character", Meta = (AllowPrivateAccess = "true"))
-	// TObjectPtr<UFIPawnExtensionComponent> PawnExtComponent;
-	//
-	// UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "FI|Character", Meta = (AllowPrivateAccess = "true"))
-	// TObjectPtr<UFIHealthComponent> HealthComponent;
-	//
-	// UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "FI|Character", Meta = (AllowPrivateAccess = "true"))
-	// TObjectPtr<UFICameraComponent> CameraComponent;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "FI|Character", Meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UFIPawnExtensionComponent> PawnExtComponent;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "FI|Character", Meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UFIHealthComponent> HealthComponent;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "FI|Character", Meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UFICameraComponent> CameraComponent;
 
 	UPROPERTY(Transient, ReplicatedUsing = OnRep_ReplicatedAcceleration)
 	FLyraReplicatedAcceleration ReplicatedAcceleration;

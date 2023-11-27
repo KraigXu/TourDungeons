@@ -9,7 +9,7 @@
 class APawn;
 class UFIAbilitySet;
 class UFIAbilityTagRelationshipMapping;
-// class ULyraCameraMode;
+class UFICameraMode;
 class UFIInputConfig;
 class UObject;
 
@@ -46,7 +46,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Lyra|Input")
 	TObjectPtr<UFIInputConfig> InputConfig;
 
-	// // Default camera mode used by player controlled pawns.
-	// UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Lyra|Camera")
-	// TSubclassOf<UFICameraMode> DefaultCameraMode;
+	// Default camera mode used by player controlled pawns.
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Lyra|Camera")
+	TSubclassOf<UFICameraMode> DefaultCameraMode;
 };
