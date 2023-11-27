@@ -10,12 +10,12 @@ class APawn;
 class UFIAbilitySet;
 class UFIAbilityTagRelationshipMapping;
 // class ULyraCameraMode;
-// class ULyraInputConfig;
+class UFIInputConfig;
 class UObject;
 
 
 /**
- * ULyraPawnData
+ * UFIPawnData
  *
  *	Non-mutable data asset that contains properties used to define a pawn.
  */
@@ -41,12 +41,12 @@ public:
 	// What mapping of ability tags to use for actions taking by this pawn
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "FI|Abilities")
 	TObjectPtr<UFIAbilityTagRelationshipMapping> TagRelationshipMapping;
-
+	
 	// // Input configuration used by player controlled pawns to create input mappings and bind input actions.
-	// UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Lyra|Input")
-	// TObjectPtr<ULyraInputConfig> InputConfig;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Lyra|Input")
+	TObjectPtr<UFIInputConfig> InputConfig;
 
 	// // Default camera mode used by player controlled pawns.
 	// UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Lyra|Camera")
-	// TSubclassOf<ULyraCameraMode> DefaultCameraMode;
+	// TSubclassOf<UFICameraMode> DefaultCameraMode;
 };

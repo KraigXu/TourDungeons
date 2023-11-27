@@ -55,15 +55,15 @@ AFICharacter::AFICharacter(const FObjectInitializer& ObjectInitializer)
 	LyraMoveComp->bCanWalkOffLedgesWhenCrouching = true;
 	LyraMoveComp->SetCrouchedHalfHeight(65.0f);
 //
-	//PawnExtComponent = CreateDefaultSubobject<ULyraPawnExtensionComponent>(TEXT("PawnExtensionComponent"));
+	//PawnExtComponent = CreateDefaultSubobject<UFIPawnExtensionComponent>(TEXT("PawnExtensionComponent"));
 	//PawnExtComponent->OnAbilitySystemInitialized_RegisterAndCall(FSimpleMulticastDelegate::FDelegate::CreateUObject(this, &ThisClass::OnAbilitySystemInitialized));
 	//PawnExtComponent->OnAbilitySystemUninitialized_Register(FSimpleMulticastDelegate::FDelegate::CreateUObject(this, &ThisClass::OnAbilitySystemUninitialized));
 //
-	//HealthComponent = CreateDefaultSubobject<ULyraHealthComponent>(TEXT("HealthComponent"));
+	//HealthComponent = CreateDefaultSubobject<UFIHealthComponent>(TEXT("HealthComponent"));
 	//HealthComponent->OnDeathStarted.AddDynamic(this, &ThisClass::OnDeathStarted);
 	//HealthComponent->OnDeathFinished.AddDynamic(this, &ThisClass::OnDeathFinished);
 //
-	//CameraComponent = CreateDefaultSubobject<ULyraCameraComponent>(TEXT("CameraComponent"));
+	//CameraComponent = CreateDefaultSubobject<UFICameraComponent>(TEXT("CameraComponent"));
 	//CameraComponent->SetRelativeLocation(FVector(-300.0f, 0.0f, 75.0f));
 
 	bUseControllerRotationPitch = false;
@@ -191,7 +191,7 @@ UAbilitySystemComponent* AFICharacter::GetAbilitySystemComponent() const
 
 void AFICharacter::OnAbilitySystemInitialized()
 {
-	// ULyraAbilitySystemComponent* LyraASC = GetLyraAbilitySystemComponent();
+	// UFIAbilitySystemComponent* LyraASC = GetLyraAbilitySystemComponent();
 	// check(LyraASC);
 	//
 	// HealthComponent->InitializeWithAbilitySystem(LyraASC);

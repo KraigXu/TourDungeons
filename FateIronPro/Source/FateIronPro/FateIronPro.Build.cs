@@ -8,6 +8,12 @@ public class FateIronPro : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
+		PublicIncludePaths.AddRange(
+			new string[] {
+				"FateIronPro"
+			}
+		);
+		
 		PublicDependencyModuleNames.AddRange(
 			new string[]
 			{
@@ -35,7 +41,8 @@ public class FateIronPro : ModuleRules
 	            "RenderCore",
 	            "UMG",
 	            "CommonGame",
-	            "CommonUser"
+	            "CommonUser",
+	            "EnhancedInput"
             });
 
 		// Uncomment if you are using Slate UI

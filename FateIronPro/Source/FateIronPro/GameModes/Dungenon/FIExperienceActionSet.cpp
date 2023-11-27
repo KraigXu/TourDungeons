@@ -9,7 +9,8 @@
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(FIExperienceActionSet)
 
-#define LOCTEXT_NAMESPACE "LyraSystem"
+#define LOCTEXT_NAMESPACE "FIDungeonSystem"
+
 
 UFIExperienceActionSet::UFIExperienceActionSet()
 {

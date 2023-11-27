@@ -11,16 +11,16 @@
 
 class AActor;
 class AController;
-class ALyraPlayerController;
-class ALyraPlayerState;
+// class ALyraPlayerController;
+// class ALyraPlayerState;
 class FLifetimeProperty;
 class IRepChangedPropertyTracker;
 class UAbilitySystemComponent;
 class UInputComponent;
 class UFIAbilitySystemComponent;
-class ULyraCameraComponent;
-class ULyraHealthComponent;
-class ULyraPawnExtensionComponent;
+class UFICameraComponent;
+class UFIHealthComponent;
+class UFIPawnExtensionComponent;
 class UObject;
 struct FFrame;
 struct FGameplayTag;
@@ -189,13 +189,13 @@ protected:
 private:
 
 	// UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "FI|Character", Meta = (AllowPrivateAccess = "true"))
-	// TObjectPtr<ULyraPawnExtensionComponent> PawnExtComponent;
+	// TObjectPtr<UFIPawnExtensionComponent> PawnExtComponent;
 	//
 	// UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "FI|Character", Meta = (AllowPrivateAccess = "true"))
-	// TObjectPtr<ULyraHealthComponent> HealthComponent;
+	// TObjectPtr<UFIHealthComponent> HealthComponent;
 	//
 	// UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "FI|Character", Meta = (AllowPrivateAccess = "true"))
-	// TObjectPtr<ULyraCameraComponent> CameraComponent;
+	// TObjectPtr<UFICameraComponent> CameraComponent;
 
 	UPROPERTY(Transient, ReplicatedUsing = OnRep_ReplicatedAcceleration)
 	FLyraReplicatedAcceleration ReplicatedAcceleration;

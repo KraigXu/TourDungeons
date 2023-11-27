@@ -335,7 +335,7 @@ bool AFIDungeonGameMode::IsExperienceLoaded() const
 
 UClass* AFIDungeonGameMode::GetDefaultPawnClassForController_Implementation(AController* InController)
 {
-	// if (const ULyraPawnData* PawnData = GetPawnDataForController(InController))
+	// if (const UFIPawnData* PawnData = GetPawnDataForController(InController))
 	// {
 	// 	if (PawnData->PawnClass)
 	// 	{
@@ -357,9 +357,9 @@ APawn* AFIDungeonGameMode::SpawnDefaultPawnAtTransform_Implementation(AControlle
 	// {
 	// 	if (APawn* SpawnedPawn = GetWorld()->SpawnActor<APawn>(PawnClass, SpawnTransform, SpawnInfo))
 	// 	{
-	// 		if (ULyraPawnExtensionComponent* PawnExtComp = ULyraPawnExtensionComponent::FindPawnExtensionComponent(SpawnedPawn))
+	// 		if (UFIPawnExtensionComponent* PawnExtComp = UFIPawnExtensionComponent::FindPawnExtensionComponent(SpawnedPawn))
 	// 		{
-	// 			if (const ULyraPawnData* PawnData = GetPawnDataForController(NewPlayer))
+	// 			if (const UFIPawnData* PawnData = GetPawnDataForController(NewPlayer))
 	// 			{
 	// 				PawnExtComp->SetPawnData(PawnData);
 	// 			}
