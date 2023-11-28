@@ -79,12 +79,12 @@ void AFIPawn::UnPossessed()
 // 		}
 // 		else
 // 		{
-// 			UE_LOG(LogLyraTeams, Error, TEXT("You can't set the team ID on a pawn (%s) except on the authority"), *GetPathNameSafe(this));
+// 			UE_LOG(LogFITeams, Error, TEXT("You can't set the team ID on a pawn (%s) except on the authority"), *GetPathNameSafe(this));
 // 		}
 // 	}
 // 	else
 // 	{
-// 		UE_LOG(LogLyraTeams, Error, TEXT("You can't set the team ID on a possessed pawn (%s); it's driven by the associated controller"), *GetPathNameSafe(this));
+// 		UE_LOG(LogFITeams, Error, TEXT("You can't set the team ID on a possessed pawn (%s); it's driven by the associated controller"), *GetPathNameSafe(this));
 // 	}
 // }
 //

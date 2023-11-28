@@ -4,25 +4,25 @@
 
 #include "FICameraMode.h"
 #include "Curves/CurveFloat.h"
-#include "LyraPenetrationAvoidanceFeeler.h"
+#include "FIPenetrationAvoidanceFeeler.h"
 #include "DrawDebugHelpers.h"
-#include "LyraCameraMode_ThirdPerson.generated.h"
+#include "FICameraMode_ThirdPerson.generated.h"
 
 class UCurveVector;
 
 /**
- * ULyraCameraMode_ThirdPerson
+ * UFICameraMode_ThirdPerson
  *
  *	A basic third person camera mode.
  */
 UCLASS(Abstract, Blueprintable)
-class ULyraCameraMode_ThirdPerson : public UFICameraMode
+class UFICameraMode_ThirdPerson : public UFICameraMode
 {
 	GENERATED_BODY()
 
 public:
 
-	ULyraCameraMode_ThirdPerson();
+	UFICameraMode_ThirdPerson();
 
 protected:
 
@@ -89,7 +89,7 @@ public:
 	 *             impacting the occluder.
 	 */
 	UPROPERTY(EditDefaultsOnly, Category = "Collision")
-	TArray<FLyraPenetrationAvoidanceFeeler> PenetrationAvoidanceFeelers;
+	TArray<FFIPenetrationAvoidanceFeeler> PenetrationAvoidanceFeelers;
 
 	UPROPERTY(Transient)
 	float AimLineToDesiredPosBlockedPct;

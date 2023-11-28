@@ -1,9 +1,9 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
-#include "LyraCameraMode_ThirdPerson.h"
+#include "FICameraMode_ThirdPerson.h"
 #include "Camera/FICameraMode.h"
 #include "Components/PrimitiveComponent.h"
-#include "Camera/LyraPenetrationAvoidanceFeeler.h"
+#include "Camera/FIPenetrationAvoidanceFeeler.h"
 #include "Curves/CurveVector.h"
 #include "Engine/Canvas.h"
 #include "GameFramework/CameraBlockingVolume.h"
@@ -12,27 +12,27 @@
 #include "GameFramework/Character.h"
 #include "Math/RotationMatrix.h"
 
-#include UE_INLINE_GENERATED_CPP_BY_NAME(LyraCameraMode_ThirdPerson)
+#include UE_INLINE_GENERATED_CPP_BY_NAME(FICameraMode_ThirdPerson)
 
 namespace LyraCameraMode_ThirdPerson_Statics
 {
 	static const FName NAME_IgnoreCameraCollision = TEXT("IgnoreCameraCollision");
 }
 
-ULyraCameraMode_ThirdPerson::ULyraCameraMode_ThirdPerson()
+UFICameraMode_ThirdPerson::UFICameraMode_ThirdPerson()
 {
 	TargetOffsetCurve = nullptr;
 
-	PenetrationAvoidanceFeelers.Add(FLyraPenetrationAvoidanceFeeler(FRotator(+00.0f, +00.0f, 0.0f), 1.00f, 1.00f, 14.f, 0));
-	PenetrationAvoidanceFeelers.Add(FLyraPenetrationAvoidanceFeeler(FRotator(+00.0f, +16.0f, 0.0f), 0.75f, 0.75f, 00.f, 3));
-	PenetrationAvoidanceFeelers.Add(FLyraPenetrationAvoidanceFeeler(FRotator(+00.0f, -16.0f, 0.0f), 0.75f, 0.75f, 00.f, 3));
-	PenetrationAvoidanceFeelers.Add(FLyraPenetrationAvoidanceFeeler(FRotator(+00.0f, +32.0f, 0.0f), 0.50f, 0.50f, 00.f, 5));
-	PenetrationAvoidanceFeelers.Add(FLyraPenetrationAvoidanceFeeler(FRotator(+00.0f, -32.0f, 0.0f), 0.50f, 0.50f, 00.f, 5));
-	PenetrationAvoidanceFeelers.Add(FLyraPenetrationAvoidanceFeeler(FRotator(+20.0f, +00.0f, 0.0f), 1.00f, 1.00f, 00.f, 4));
-	PenetrationAvoidanceFeelers.Add(FLyraPenetrationAvoidanceFeeler(FRotator(-20.0f, +00.0f, 0.0f), 0.50f, 0.50f, 00.f, 4));
+	PenetrationAvoidanceFeelers.Add(FFIPenetrationAvoidanceFeeler(FRotator(+00.0f, +00.0f, 0.0f), 1.00f, 1.00f, 14.f, 0));
+	PenetrationAvoidanceFeelers.Add(FFIPenetrationAvoidanceFeeler(FRotator(+00.0f, +16.0f, 0.0f), 0.75f, 0.75f, 00.f, 3));
+	PenetrationAvoidanceFeelers.Add(FFIPenetrationAvoidanceFeeler(FRotator(+00.0f, -16.0f, 0.0f), 0.75f, 0.75f, 00.f, 3));
+	PenetrationAvoidanceFeelers.Add(FFIPenetrationAvoidanceFeeler(FRotator(+00.0f, +32.0f, 0.0f), 0.50f, 0.50f, 00.f, 5));
+	PenetrationAvoidanceFeelers.Add(FFIPenetrationAvoidanceFeeler(FRotator(+00.0f, -32.0f, 0.0f), 0.50f, 0.50f, 00.f, 5));
+	PenetrationAvoidanceFeelers.Add(FFIPenetrationAvoidanceFeeler(FRotator(+20.0f, +00.0f, 0.0f), 1.00f, 1.00f, 00.f, 4));
+	PenetrationAvoidanceFeelers.Add(FFIPenetrationAvoidanceFeeler(FRotator(-20.0f, +00.0f, 0.0f), 0.50f, 0.50f, 00.f, 4));
 }
 
-void ULyraCameraMode_ThirdPerson::UpdateView(float DeltaTime)
+void UFICameraMode_ThirdPerson::UpdateView(float DeltaTime)
 {
 	UpdateForTarget(DeltaTime);
 	UpdateCrouchOffset(DeltaTime);
@@ -71,7 +71,7 @@ void ULyraCameraMode_ThirdPerson::UpdateView(float DeltaTime)
 	UpdatePreventPenetration(DeltaTime);
 }
 
-void ULyraCameraMode_ThirdPerson::UpdateForTarget(float DeltaTime)
+void UFICameraMode_ThirdPerson::UpdateForTarget(float DeltaTime)
 {
 
 	if (const ACharacter* TargetCharacter = Cast<ACharacter>(GetTargetActor()))
@@ -90,7 +90,7 @@ void ULyraCameraMode_ThirdPerson::UpdateForTarget(float DeltaTime)
 	SetTargetCrouchOffset(FVector::ZeroVector);
 }
 
-void ULyraCameraMode_ThirdPerson::DrawDebug(UCanvas* Canvas) const
+void UFICameraMode_ThirdPerson::DrawDebug(UCanvas* Canvas) const
 {
 	Super::DrawDebug(Canvas);
 
@@ -108,7 +108,7 @@ void ULyraCameraMode_ThirdPerson::DrawDebug(UCanvas* Canvas) const
 #endif
 }
 
-void ULyraCameraMode_ThirdPerson::UpdatePreventPenetration(float DeltaTime)
+void UFICameraMode_ThirdPerson::UpdatePreventPenetration(float DeltaTime)
 {
 	if (!bPreventPenetration)
 	{
@@ -170,7 +170,7 @@ void ULyraCameraMode_ThirdPerson::UpdatePreventPenetration(float DeltaTime)
 	}
 }
 
-void ULyraCameraMode_ThirdPerson::PreventCameraPenetration(class AActor const& ViewTarget, FVector const& SafeLoc, FVector& CameraLoc, float const& DeltaTime, float& DistBlockedPct, bool bSingleRayOnly)
+void UFICameraMode_ThirdPerson::PreventCameraPenetration(class AActor const& ViewTarget, FVector const& SafeLoc, FVector& CameraLoc, float const& DeltaTime, float& DistBlockedPct, bool bSingleRayOnly)
 {
 #if ENABLE_DRAW_DEBUG
 	DebugActorsHitDuringCameraPenetration.Reset();
@@ -203,7 +203,7 @@ void ULyraCameraMode_ThirdPerson::PreventCameraPenetration(class AActor const& V
 
 	for (int32 RayIdx = 0; RayIdx < NumRaysToShoot; ++RayIdx)
 	{
-		FLyraPenetrationAvoidanceFeeler& Feeler = PenetrationAvoidanceFeelers[RayIdx];
+		FFIPenetrationAvoidanceFeeler& Feeler = PenetrationAvoidanceFeelers[RayIdx];
 		if (Feeler.FramesUntilNextTrace <= 0)
 		{
 			// calc ray target
@@ -349,7 +349,7 @@ void ULyraCameraMode_ThirdPerson::PreventCameraPenetration(class AActor const& V
 	}
 }
 
-void ULyraCameraMode_ThirdPerson::SetTargetCrouchOffset(FVector NewTargetOffset)
+void UFICameraMode_ThirdPerson::SetTargetCrouchOffset(FVector NewTargetOffset)
 {
 	CrouchOffsetBlendPct = 0.0f;
 	InitialCrouchOffset = CurrentCrouchOffset;
@@ -357,7 +357,7 @@ void ULyraCameraMode_ThirdPerson::SetTargetCrouchOffset(FVector NewTargetOffset)
 }
 
 
-void ULyraCameraMode_ThirdPerson::UpdateCrouchOffset(float DeltaTime)
+void UFICameraMode_ThirdPerson::UpdateCrouchOffset(float DeltaTime)
 {
 	if (CrouchOffsetBlendPct < 1.0f)
 	{

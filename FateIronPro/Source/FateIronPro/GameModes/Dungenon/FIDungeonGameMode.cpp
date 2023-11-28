@@ -28,7 +28,10 @@
 #include "FIDungeonModeManagerComponent.h"
 #include "TimerManager.h"
 #include "GameMapsSettings.h"
+#include "Character/FICharacter.h"
 #include "FateIronPro/FILogChannels.h"
+#include "Player/Dungenon/LyraPlayerController.h"
+#include "Player/Dungenon/LyraPlayerState.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(FIDungeonGameMode)
 
@@ -36,12 +39,12 @@ AFIDungeonGameMode::AFIDungeonGameMode(const FObjectInitializer& ObjectInitializ
 	: Super(ObjectInitializer)
 {
 	GameStateClass = AFIDungeonGameState::StaticClass();
-	// GameSessionClass = ALyraGameSession::StaticClass();
-	// PlayerControllerClass = ALyraPlayerController::StaticClass();
-	// ReplaySpectatorPlayerControllerClass = ALyraReplayPlayerController::StaticClass();
-	// PlayerStateClass = ALyraPlayerState::StaticClass();
-	// DefaultPawnClass = ALyraCharacter::StaticClass();
-	// HUDClass = ALyraHUD::StaticClass();
+	//GameSessionClass = ALyraGameSession::StaticClass();
+	PlayerControllerClass = ALyraPlayerController::StaticClass();
+	ReplaySpectatorPlayerControllerClass = ALyraReplayPlayerController::StaticClass();
+	PlayerStateClass = ALyraPlayerState::StaticClass();
+	DefaultPawnClass = AFICharacter::StaticClass();
+	//HUDClass = ALyraHUD::StaticClass();
 }
 
 const UFIPawnData* AFIDungeonGameMode::GetPawnDataForController(const AController* InController) const
@@ -277,14 +280,14 @@ void AFIDungeonGameMode::HostDedicatedServerMatch(ECommonSessionOnlineMode Onlin
 // 	// 	if (bSuccess)
 // 	// 	{
 // 	// 		// Online login worked, start a full online game
-// 	// 		UE_LOG(LogLyraExperience, Log, TEXT("Dedicated server online login succeeded, starting online server"));
+// 	// 		UE_LOG(LogFIExperience, Log, TEXT("Dedicated server online login succeeded, starting online server"));
 // 	// 		HostDedicatedServerMatch(ECommonSessionOnlineMode::Online);
 // 	// 	}
 // 	// 	else
 // 	// 	{
 // 	// 		// Go ahead and try to host anyway, but without online support
 // 	// 		// This behavior is fairly game specific, but this behavior provides the most flexibility for testing
-// 	// 		UE_LOG(LogLyraExperience, Log, TEXT("Dedicated server online login failed, starting LAN-only server"));
+// 	// 		UE_LOG(LogFIExperience, Log, TEXT("Dedicated server online login failed, starting LAN-only server"));
 // 	// 		HostDedicatedServerMatch(ECommonSessionOnlineMode::LAN);
 // 	// 	}
 // 	// }

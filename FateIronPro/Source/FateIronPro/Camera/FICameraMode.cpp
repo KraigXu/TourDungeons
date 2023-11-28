@@ -6,7 +6,7 @@
 #include "Engine/Canvas.h"
 #include "GameFramework/Character.h"
 #include "FICameraComponent.h"
-#include "LyraPlayerCameraManager.h"
+#include "FIPlayerCameraManager.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(FICameraMode)
 

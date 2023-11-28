@@ -16,7 +16,7 @@ struct FGameplayTag;
 struct FMinimalViewInfo;
 template <class TClass> class TSubclassOf;
 
-// DECLARE_DELEGATE_RetVal(TSubclassOf<ULyraCameraMode>, FLyraCameraModeDelegate);
+DECLARE_DELEGATE_RetVal(TSubclassOf<UFICameraMode>, FFICameraModeDelegate);
 
 /**
  * UFICameraComponent
@@ -39,8 +39,8 @@ public:
 	// Returns the target actor that the camera is looking at.
 	virtual AActor* GetTargetActor() const { return GetOwner(); }
 
-	// // Delegate used to query for the best camera mode.
-	// FLyraCameraModeDelegate DetermineCameraModeDelegate;
+	// Delegate used to query for the best camera mode.
+	FFICameraModeDelegate DetermineCameraModeDelegate;
 
 	// Add an offset to the field of view.  The offset is only for one frame, it gets cleared once it is applied.
 	void AddFieldOfViewOffset(float FovOffset) { FieldOfViewOffset += FovOffset; }
@@ -58,7 +58,6 @@ protected:
 	virtual void UpdateCameraModes();
 
 protected:
-	//
 	// // Stack used to blend the camera modes.
 	// UPROPERTY()
 	// TObjectPtr<ULyraCameraModeStack> CameraModeStack;

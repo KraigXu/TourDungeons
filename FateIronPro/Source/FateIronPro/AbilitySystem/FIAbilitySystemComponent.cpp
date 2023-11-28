@@ -392,7 +392,7 @@ void UFIAbilitySystemComponent::ClientNotifyAbilityFailed_Implementation(const U
 
 void UFIAbilitySystemComponent::HandleAbilityFailed(const UGameplayAbility* Ability, const FGameplayTagContainer& FailureReason)
 {
-	//UE_LOG(LogLyraAbilitySystem, Warning, TEXT("Ability %s failed to activate (tags: %s)"), *GetPathNameSafe(Ability), *FailureReason.ToString());
+	//UE_LOG(LogFIAbilitySystem, Warning, TEXT("Ability %s failed to activate (tags: %s)"), *GetPathNameSafe(Ability), *FailureReason.ToString());
 
 	if (const UFIGameplayAbility* LyraAbility = Cast<const UFIGameplayAbility>(Ability))
 	{

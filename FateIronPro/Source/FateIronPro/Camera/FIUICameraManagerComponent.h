@@ -4,9 +4,9 @@
 
 #include "Camera/PlayerCameraManager.h"
 
-#include "LyraUICameraManagerComponent.generated.h"
+#include "FIUICameraManagerComponent.generated.h"
 
-class ALyraPlayerCameraManager;
+class AFIPlayerCameraManager;
 
 class AActor;
 class AHUD;
@@ -15,16 +15,16 @@ class FDebugDisplayInfo;
 class UCanvas;
 class UObject;
 
-UCLASS( Transient, Within=LyraPlayerCameraManager )
-class ULyraUICameraManagerComponent : public UActorComponent
+UCLASS( Transient, Within=FIPlayerCameraManager )
+class UFIUICameraManagerComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
 public:
-	static ULyraUICameraManagerComponent* GetComponent(APlayerController* PC);
+	static UFIUICameraManagerComponent* GetComponent(APlayerController* PC);
 
 public:
-	ULyraUICameraManagerComponent();	
+	UFIUICameraManagerComponent();	
 	virtual void InitializeComponent() override;
 
 	bool IsSettingViewTarget() const { return bUpdatingViewTarget; }

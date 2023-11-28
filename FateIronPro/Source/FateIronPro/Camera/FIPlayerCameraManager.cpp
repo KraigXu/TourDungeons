@@ -1,6 +1,6 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
-#include "LyraPlayerCameraManager.h"
+#include "FIPlayerCameraManager.h"
 
 #include "Async/TaskGraphInterfaces.h"
 #include "Engine/Canvas.h"
@@ -8,30 +8,30 @@
 #include "GameFramework/Pawn.h"
 #include "GameFramework/PlayerController.h"
 #include "FICameraComponent.h"
-#include "LyraUICameraManagerComponent.h"
+#include "FIUICameraManagerComponent.h"
 
-#include UE_INLINE_GENERATED_CPP_BY_NAME(LyraPlayerCameraManager)
+#include UE_INLINE_GENERATED_CPP_BY_NAME(FIPlayerCameraManager)
 
 class FDebugDisplayInfo;
 
 static FName UICameraComponentName(TEXT("UICamera"));
 
-ALyraPlayerCameraManager::ALyraPlayerCameraManager(const FObjectInitializer& ObjectInitializer)
+AFIPlayerCameraManager::AFIPlayerCameraManager(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
 	DefaultFOV = LYRA_CAMERA_DEFAULT_FOV;
 	ViewPitchMin = LYRA_CAMERA_DEFAULT_PITCH_MIN;
 	ViewPitchMax = LYRA_CAMERA_DEFAULT_PITCH_MAX;
 
-	UICamera = CreateDefaultSubobject<ULyraUICameraManagerComponent>(UICameraComponentName);
+	UICamera = CreateDefaultSubobject<UFIUICameraManagerComponent>(UICameraComponentName);
 }
 
-ULyraUICameraManagerComponent* ALyraPlayerCameraManager::GetUICameraComponent() const
+UFIUICameraManagerComponent* AFIPlayerCameraManager::GetUICameraComponent() const
 {
 	return UICamera;
 }
 
-void ALyraPlayerCameraManager::UpdateViewTarget(FTViewTarget& OutVT, float DeltaTime)
+void AFIPlayerCameraManager::UpdateViewTarget(FTViewTarget& OutVT, float DeltaTime)
 {
 	// If the UI Camera is looking at something, let it have priority.
 	if (UICamera->NeedsToUpdateViewTarget())
@@ -44,7 +44,7 @@ void ALyraPlayerCameraManager::UpdateViewTarget(FTViewTarget& OutVT, float Delta
 	Super::UpdateViewTarget(OutVT, DeltaTime);
 }
 
-void ALyraPlayerCameraManager::DisplayDebug(UCanvas* Canvas, const FDebugDisplayInfo& DebugDisplay, float& YL, float& YPos)
+void AFIPlayerCameraManager::DisplayDebug(UCanvas* Canvas, const FDebugDisplayInfo& DebugDisplay, float& YL, float& YPos)
 {
 	check(Canvas);
 

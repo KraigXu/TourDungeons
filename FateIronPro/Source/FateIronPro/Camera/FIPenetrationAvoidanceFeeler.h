@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 
-#include "LyraPenetrationAvoidanceFeeler.generated.h"
+#include "FIPenetrationAvoidanceFeeler.generated.h"
 
 /**
  * Struct defining a feeler ray used for camera penetration avoidance.
  */
 USTRUCT()
-struct FLyraPenetrationAvoidanceFeeler
+struct FFIPenetrationAvoidanceFeeler
 {
 	GENERATED_BODY()
 
@@ -39,7 +39,7 @@ struct FLyraPenetrationAvoidanceFeeler
 	int32 FramesUntilNextTrace;
 
 
-	FLyraPenetrationAvoidanceFeeler()
+	FFIPenetrationAvoidanceFeeler()
 		: AdjustmentRot(ForceInit)
 		, WorldWeight(0)
 		, PawnWeight(0)
@@ -49,7 +49,7 @@ struct FLyraPenetrationAvoidanceFeeler
 	{
 	}
 
-	FLyraPenetrationAvoidanceFeeler(const FRotator& InAdjustmentRot,
+	FFIPenetrationAvoidanceFeeler(const FRotator& InAdjustmentRot,
 									const float& InWorldWeight, 
 									const float& InPawnWeight, 
 									const float& InExtent, 

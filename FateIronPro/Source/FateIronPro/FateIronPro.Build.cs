@@ -39,7 +39,10 @@ public class FateIronPro : ModuleRules
 	            "Slate",
 	            "SlateCore",
 	            "RenderCore",
+	            "NetCore",
 	            "UMG",
+	            "CommonUI",
+	            "CommonInput",
 	            "CommonGame",
 	            "CommonUser",
 	            "EnhancedInput"

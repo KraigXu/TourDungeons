@@ -4,34 +4,33 @@
 
 #include "Camera/PlayerCameraManager.h"
 
-#include "LyraPlayerCameraManager.generated.h"
+#include "FIPlayerCameraManager.generated.h"
 
 class FDebugDisplayInfo;
 class UCanvas;
 class UObject;
 
-
 #define LYRA_CAMERA_DEFAULT_FOV			(80.0f)
 #define LYRA_CAMERA_DEFAULT_PITCH_MIN	(-89.0f)
 #define LYRA_CAMERA_DEFAULT_PITCH_MAX	(89.0f)
 
-class ULyraUICameraManagerComponent;
+class UFIUICameraManagerComponent;
 
 /**
- * ALyraPlayerCameraManager
+ * AFIPlayerCameraManager
  *
  *	The base player camera manager class used by this project.
  */
 UCLASS(notplaceable, MinimalAPI)
-class ALyraPlayerCameraManager : public APlayerCameraManager
+class AFIPlayerCameraManager : public APlayerCameraManager
 {
 	GENERATED_BODY()
 
 public:
 
-	ALyraPlayerCameraManager(const FObjectInitializer& ObjectInitializer);
+	AFIPlayerCameraManager(const FObjectInitializer& ObjectInitializer);
 
-	ULyraUICameraManagerComponent* GetUICameraComponent() const;
+	UFIUICameraManagerComponent* GetUICameraComponent() const;
 
 protected:
 
@@ -42,5 +41,5 @@ protected:
 private:
 	/** The UI Camera Component, controls the camera when UI is doing something important that gameplay doesn't get priority over. */
 	UPROPERTY(Transient)
-	TObjectPtr<ULyraUICameraManagerComponent> UICamera;
+	TObjectPtr<UFIUICameraManagerComponent> UICamera;
 };
