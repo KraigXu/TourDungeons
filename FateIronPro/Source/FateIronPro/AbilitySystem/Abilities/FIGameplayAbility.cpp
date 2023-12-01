@@ -8,7 +8,13 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemGlobals.h"
 #include "FIAbilityCost.h"
+#include "AbilitySystem/FIAbilitySourceInterface.h"
+#include "AbilitySystem/FIGameplayEffectContext.h"
+#include "Camera/FICameraMode.h"
+#include "Character/FICharacter.h"
+#include "Character/FIHeroComponent.h"
 #include "GameFramework/PlayerState.h"
+#include "Player/Dungenon/LyraPlayerController.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(FIGameplayAbility)
 
@@ -37,7 +43,7 @@ UFIGameplayAbility::UFIGameplayAbility(const FObjectInitializer& ObjectInitializ
 
 	bLogCancelation = false;
 
-	//ActiveCameraMode = nullptr;
+	ActiveCameraMode = nullptr;
 }
 
 UFIAbilitySystemComponent* UFIGameplayAbility::GetLyraAbilitySystemComponentFromActorInfo() const
@@ -45,10 +51,10 @@ UFIAbilitySystemComponent* UFIGameplayAbility::GetLyraAbilitySystemComponentFrom
 	return (CurrentActorInfo ? Cast<UFIAbilitySystemComponent>(CurrentActorInfo->AbilitySystemComponent.Get()) : nullptr);
 }
 
-// ALyraPlayerController* UFIGameplayAbility::GetLyraPlayerControllerFromActorInfo() const
-// {
-// 	return (CurrentActorInfo ? Cast<ALyraPlayerController>(CurrentActorInfo->PlayerController.Get()) : nullptr);
-// }
+ALyraPlayerController* UFIGameplayAbility::GetLyraPlayerControllerFromActorInfo() const
+{
+	return (CurrentActorInfo ? Cast<ALyraPlayerController>(CurrentActorInfo->PlayerController.Get()) : nullptr);
+}
 
 AController* UFIGameplayAbility::GetControllerFromActorInfo() const
 {
@@ -80,15 +86,15 @@ AController* UFIGameplayAbility::GetControllerFromActorInfo() const
 	return nullptr;
 }
 
-// ALyraCharacter* UFIGameplayAbility::GetLyraCharacterFromActorInfo() const
-// {
-// 	return (CurrentActorInfo ? Cast<ALyraCharacter>(CurrentActorInfo->AvatarActor.Get()) : nullptr);
-// }
-//
-// ULyraHeroComponent* UFIGameplayAbility::GetHeroComponentFromActorInfo() const
-// {
-// 	return (CurrentActorInfo ? ULyraHeroComponent::FindHeroComponent(CurrentActorInfo->AvatarActor.Get()) : nullptr);
-// }
+AFICharacter* UFIGameplayAbility::GetLyraCharacterFromActorInfo() const
+{
+	return (CurrentActorInfo ? Cast<AFICharacter>(CurrentActorInfo->AvatarActor.Get()) : nullptr);
+}
+
+UFIHeroComponent* UFIGameplayAbility::GetHeroComponentFromActorInfo() const
+{
+	return (CurrentActorInfo ? UFIHeroComponent::FindHeroComponent(CurrentActorInfo->AvatarActor.Get()) : nullptr);
+}
 
 void UFIGameplayAbility::NativeOnAbilityFailedToActivate(const FGameplayTagContainer& FailedReason) const
 {
@@ -268,24 +274,24 @@ void UFIGameplayAbility::ApplyCost(const FGameplayAbilitySpecHandle Handle, cons
 FGameplayEffectContextHandle UFIGameplayAbility::MakeEffectContext(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo) const
 {
 	FGameplayEffectContextHandle ContextHandle = Super::MakeEffectContext(Handle, ActorInfo);
-	//
-	// FLyraGameplayEffectContext* EffectContext = FLyraGameplayEffectContext::ExtractEffectContext(ContextHandle);
-	// check(EffectContext);
-	//
-	// check(ActorInfo);
-	//
-	// AActor* EffectCauser = nullptr;
-	// const ILyraAbilitySourceInterface* AbilitySource = nullptr;
-	// float SourceLevel = 0.0f;
-	// GetAbilitySource(Handle, ActorInfo, /*out*/ SourceLevel, /*out*/ AbilitySource, /*out*/ EffectCauser);
-	//
-	// UObject* SourceObject = GetSourceObject(Handle, ActorInfo);
-	//
-	// AActor* Instigator = ActorInfo ? ActorInfo->OwnerActor.Get() : nullptr;
-	//
-	// EffectContext->SetAbilitySource(AbilitySource, SourceLevel);
-	// EffectContext->AddInstigator(Instigator, EffectCauser);
-	// EffectContext->AddSourceObject(SourceObject);
+	
+	FFIGameplayEffectContext* EffectContext = FFIGameplayEffectContext::ExtractEffectContext(ContextHandle);
+	check(EffectContext);
+	
+	check(ActorInfo);
+	
+	AActor* EffectCauser = nullptr;
+	const IFIAbilitySourceInterface* AbilitySource = nullptr;
+	float SourceLevel = 0.0f;
+	GetAbilitySource(Handle, ActorInfo, /*out*/ SourceLevel, /*out*/ AbilitySource, /*out*/ EffectCauser);
+	
+	UObject* SourceObject = GetSourceObject(Handle, ActorInfo);
+	
+	AActor* Instigator = ActorInfo ? ActorInfo->OwnerActor.Get() : nullptr;
+	
+	EffectContext->SetAbilitySource(AbilitySource, SourceLevel);
+	EffectContext->AddInstigator(Instigator, EffectCauser);
+	EffectContext->AddSourceObject(SourceObject);
 
 	return ContextHandle;
 }
@@ -415,19 +421,19 @@ void UFIGameplayAbility::OnPawnAvatarSet()
 	K2_OnPawnAvatarSet();
 }
 
-// void UFIGameplayAbility::GetAbilitySource(FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, float& OutSourceLevel, const ILyraAbilitySourceInterface*& OutAbilitySource, AActor*& OutEffectCauser) const
-// {
-// 	OutSourceLevel = 0.0f;
-// 	OutAbilitySource = nullptr;
-// 	OutEffectCauser = nullptr;
-//
-// 	OutEffectCauser = ActorInfo->AvatarActor.Get();
-//
-// 	// If we were added by something that's an ability info source, use it
-// 	UObject* SourceObject = GetSourceObject(Handle, ActorInfo);
-//
-// 	OutAbilitySource = Cast<ILyraAbilitySourceInterface>(SourceObject);
-// }
+void UFIGameplayAbility::GetAbilitySource(FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, float& OutSourceLevel, const IFIAbilitySourceInterface*& OutAbilitySource, AActor*& OutEffectCauser) const
+{
+	OutSourceLevel = 0.0f;
+	OutAbilitySource = nullptr;
+	OutEffectCauser = nullptr;
+
+	OutEffectCauser = ActorInfo->AvatarActor.Get();
+
+	// If we were added by something that's an ability info source, use it
+	UObject* SourceObject = GetSourceObject(Handle, ActorInfo);
+
+	OutAbilitySource = Cast<IFIAbilitySourceInterface>(SourceObject);
+}
 
 void UFIGameplayAbility::TryActivateAbilityOnSpawn(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec) const
 {
@@ -509,28 +515,28 @@ bool UFIGameplayAbility::ChangeActivationGroup(EFIAbilityActivationGroup NewGrou
 	return true;
 }
 
-// void UFIGameplayAbility::SetCameraMode(TSubclassOf<ULyraCameraMode> CameraMode)
-// {
-// 	ENSURE_ABILITY_IS_INSTANTIATED_OR_RETURN(SetCameraMode, );
-//
-// 	if (ULyraHeroComponent* HeroComponent = GetHeroComponentFromActorInfo())
-// 	{
-// 		HeroComponent->SetAbilityCameraMode(CameraMode, CurrentSpecHandle);
-// 		ActiveCameraMode = CameraMode;
-// 	}
-// }
+void UFIGameplayAbility::SetCameraMode(TSubclassOf<UFICameraMode> CameraMode)
+{
+	ENSURE_ABILITY_IS_INSTANTIATED_OR_RETURN(SetCameraMode, );
 
-// void UFIGameplayAbility::ClearCameraMode()
-// {
-// 	ENSURE_ABILITY_IS_INSTANTIATED_OR_RETURN(ClearCameraMode, );
-//
-// 	if (ActiveCameraMode)
-// 	{
-// 		if (ULyraHeroComponent* HeroComponent = GetHeroComponentFromActorInfo())
-// 		{
-// 			HeroComponent->ClearAbilityCameraMode(CurrentSpecHandle);
-// 		}
-// 		ActiveCameraMode = nullptr;
-// 	}
-// }
+	if (UFIHeroComponent* HeroComponent = GetHeroComponentFromActorInfo())
+	{
+		HeroComponent->SetAbilityCameraMode(CameraMode, CurrentSpecHandle);
+		ActiveCameraMode = CameraMode;
+	}
+}
+
+void UFIGameplayAbility::ClearCameraMode()
+{
+	ENSURE_ABILITY_IS_INSTANTIATED_OR_RETURN(ClearCameraMode, );
+
+	if (ActiveCameraMode)
+	{
+		if (UFIHeroComponent* HeroComponent = GetHeroComponentFromActorInfo())
+		{
+			HeroComponent->ClearAbilityCameraMode(CurrentSpecHandle);
+		}
+		ActiveCameraMode = nullptr;
+	}
+}
 

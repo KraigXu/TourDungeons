@@ -4,7 +4,6 @@
 
 #include "FateIronPro/FILogChannels.h"
 
-
 #include UE_INLINE_GENERATED_CPP_BY_NAME(FIInputConfig)
 
 

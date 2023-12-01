@@ -4,7 +4,6 @@
 #include "AssetRegistry/AssetData.h"
 #include "Engine/GameInstance.h"
 #include "Engine/World.h"
-// #include "LyraLogChannels.h"
 #include "Misc/CommandLine.h"
 // #include "System/LyraAssetManager.h"
 #include "FIDungeonGameState.h"
@@ -26,12 +25,15 @@
 // #include "CommonUserSubsystem.h"
 // #include "CommonSessionSubsystem.h"
 #include "FIDungeonModeManagerComponent.h"
+#include "FIExperienceDefinition.h"
 #include "TimerManager.h"
 #include "GameMapsSettings.h"
 #include "Character/FICharacter.h"
+#include "Character/FIPawnData.h"
 #include "FateIronPro/FILogChannels.h"
 #include "Player/Dungenon/LyraPlayerController.h"
 #include "Player/Dungenon/LyraPlayerState.h"
+#include "System/FIAssetManager.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(FIDungeonGameMode)
 
@@ -104,37 +106,37 @@ void AFIDungeonGameMode::HandleMatchAssignmentIfNotExpectingOne()
 	//  - Dedicated server
 	//  - Default experience
 	
-	// UWorld* World = GetWorld();
-	//
-	// if (!ExperienceId.IsValid() && UGameplayStatics::HasOption(OptionsString, TEXT("Experience")))
-	// {
-	// 	const FString ExperienceFromOptions = UGameplayStatics::ParseOption(OptionsString, TEXT("Experience"));
-	// 	ExperienceId = FPrimaryAssetId(FPrimaryAssetType(UFIExperienceDefinition::StaticClass()->GetFName()), FName(*ExperienceFromOptions));
-	// 	ExperienceIdSource = TEXT("OptionsString");
-	// }
-	//
-	// if (!ExperienceId.IsValid() && World->IsPlayInEditor())
-	// {
-	// 	ExperienceId = GetDefault<ULyraDeveloperSettings>()->ExperienceOverride;
-	// 	ExperienceIdSource = TEXT("DeveloperSettings");
-	// }
-	//
-	// // see if the command line wants to set the experience
-	// if (!ExperienceId.IsValid())
-	// {
-	// 	FString ExperienceFromCommandLine;
-	// 	if (FParse::Value(FCommandLine::Get(), TEXT("Experience="), ExperienceFromCommandLine))
-	// 	{
-	// 		ExperienceId = FPrimaryAssetId::ParseTypeAndName(ExperienceFromCommandLine);
-	// 		if (!ExperienceId.PrimaryAssetType.IsValid())
-	// 		{
-	// 			ExperienceId = FPrimaryAssetId(FPrimaryAssetType(UFIExperienceDefinition::StaticClass()->GetFName()), FName(*ExperienceFromCommandLine));
-	// 		}
-	// 		ExperienceIdSource = TEXT("CommandLine");
-	// 	}
-	// }
-	//
-	// // see if the world settings has a default experience
+	UWorld* World = GetWorld();
+	
+	if (!ExperienceId.IsValid() && UGameplayStatics::HasOption(OptionsString, TEXT("Experience")))
+	{
+		const FString ExperienceFromOptions = UGameplayStatics::ParseOption(OptionsString, TEXT("Experience"));
+		ExperienceId = FPrimaryAssetId(FPrimaryAssetType(UFIExperienceDefinition::StaticClass()->GetFName()), FName(*ExperienceFromOptions));
+		ExperienceIdSource = TEXT("OptionsString");
+	}
+	
+	if (!ExperienceId.IsValid() && World->IsPlayInEditor())
+	{
+		//ExperienceId = GetDefault<ULyraDeveloperSettings>()->ExperienceOverride;
+		ExperienceIdSource = TEXT("DeveloperSettings");
+	}
+	
+	// see if the command line wants to set the experience
+	if (!ExperienceId.IsValid())
+	{
+		FString ExperienceFromCommandLine;
+		if (FParse::Value(FCommandLine::Get(), TEXT("Experience="), ExperienceFromCommandLine))
+		{
+			ExperienceId = FPrimaryAssetId::ParseTypeAndName(ExperienceFromCommandLine);
+			if (!ExperienceId.PrimaryAssetType.IsValid())
+			{
+				ExperienceId = FPrimaryAssetId(FPrimaryAssetType(UFIExperienceDefinition::StaticClass()->GetFName()), FName(*ExperienceFromCommandLine));
+			}
+			ExperienceIdSource = TEXT("CommandLine");
+		}
+	}
+	
+	// see if the world settings has a default experience
 	// if (!ExperienceId.IsValid())
 	// {
 	// 	if (ALyraWorldSettings* TypedWorldSettings = Cast<ALyraWorldSettings>(GetWorldSettings()))
@@ -144,28 +146,28 @@ void AFIDungeonGameMode::HandleMatchAssignmentIfNotExpectingOne()
 	// 	}
 	// }
 	//
-	// ULyraAssetManager& AssetManager = ULyraAssetManager::Get();
-	// FAssetData Dummy;
-	// if (ExperienceId.IsValid() && !AssetManager.GetPrimaryAssetData(ExperienceId, /*out*/ Dummy))
-	// {
-	// 	UE_LOG(LogFIExperience, Error, TEXT("EXPERIENCE: Wanted to use %s but couldn't find it, falling back to the default)"), *ExperienceId.ToString());
-	// 	ExperienceId = FPrimaryAssetId();
-	// }
-	//
-	// // Final fallback to the default experience
-	// if (!ExperienceId.IsValid())
-	// {
-	// 	if (TryDedicatedServerLogin())
-	// 	{
-	// 		// This will start to host as a dedicated server
-	// 		return;
-	// 	}
-	//
-	// 	//@TODO: Pull this from a config setting or something
-	// 	ExperienceId = FPrimaryAssetId(FPrimaryAssetType("LyraExperienceDefinition"), FName("B_LyraDefaultExperience"));
-	// 	ExperienceIdSource = TEXT("Default");
-	// }
-	//
+	UFIAssetManager& AssetManager = UFIAssetManager::Get();
+	FAssetData Dummy;
+	if (ExperienceId.IsValid() && !AssetManager.GetPrimaryAssetData(ExperienceId, /*out*/ Dummy))
+	{
+		UE_LOG(LogFIExperience, Error, TEXT("EXPERIENCE: Wanted to use %s but couldn't find it, falling back to the default)"), *ExperienceId.ToString());
+		ExperienceId = FPrimaryAssetId();
+	}
+	
+	// Final fallback to the default experience
+	if (!ExperienceId.IsValid())
+	{
+		if (TryDedicatedServerLogin())
+		{
+			// This will start to host as a dedicated server
+			return;
+		}
+	
+		//@TODO: Pull this from a config setting or something
+		ExperienceId = FPrimaryAssetId(FPrimaryAssetType("LyraExperienceDefinition"), FName("B_LyraDefaultExperience"));
+		ExperienceIdSource = TEXT("Default");
+	}
+	
 	OnMatchAssignmentGiven(ExperienceId, ExperienceIdSource);
 }
 
@@ -338,13 +340,13 @@ bool AFIDungeonGameMode::IsExperienceLoaded() const
 
 UClass* AFIDungeonGameMode::GetDefaultPawnClassForController_Implementation(AController* InController)
 {
-	// if (const UFIPawnData* PawnData = GetPawnDataForController(InController))
-	// {
-	// 	if (PawnData->PawnClass)
-	// 	{
-	// 		return PawnData->PawnClass;
-	// 	}
-	// }
+	 if (const UFIPawnData* PawnData = GetPawnDataForController(InController))
+	 {
+	 	if (PawnData->PawnClass)
+	 	{
+	 		return PawnData->PawnClass;
+	 	}
+	 }
 
 	return Super::GetDefaultPawnClassForController_Implementation(InController);
 }

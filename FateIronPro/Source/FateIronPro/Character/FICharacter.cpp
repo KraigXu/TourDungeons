@@ -13,6 +13,8 @@
 #include "FateIronPro/FIGameplayTags.h"
 #include "FateIronPro/FILogChannels.h"
 #include "FateIronPro/AbilitySystem/FIAbilitySystemComponent.h"
+#include "Player/Dungenon/LyraPlayerController.h"
+#include "Player/Dungenon/LyraPlayerState.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(FICharacter)
 
@@ -166,16 +168,16 @@ void AFICharacter::NotifyControllerChanged()
 	// }
 }
 
-// ALyraPlayerController* AFICharacter::GetLyraPlayerController() const
-// {
-// 	return CastChecked<ALyraPlayerController>(Controller, ECastCheckedType::NullAllowed);
-// }
-//
-// ALyraPlayerState* AFICharacter::GetLyraPlayerState() const
-// {
-// 	return CastChecked<ALyraPlayerState>(GetPlayerState(), ECastCheckedType::NullAllowed);
-// }
-//
+ALyraPlayerController* AFICharacter::GetLyraPlayerController() const
+{
+	return CastChecked<ALyraPlayerController>(Controller, ECastCheckedType::NullAllowed);
+}
+
+ALyraPlayerState* AFICharacter::GetLyraPlayerState() const
+{
+	return CastChecked<ALyraPlayerState>(GetPlayerState(), ECastCheckedType::NullAllowed);
+}
+
 UFIAbilitySystemComponent* AFICharacter::GetFIAbilitySystemComponent() const
 {
 	return Cast<UFIAbilitySystemComponent>(GetAbilitySystemComponent());

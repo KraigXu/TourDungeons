@@ -11,8 +11,8 @@
 
 class AActor;
 class AController;
-// class ALyraPlayerController;
-// class ALyraPlayerState;
+class ALyraPlayerController;
+class ALyraPlayerState;
 class FLifetimeProperty;
 class IRepChangedPropertyTracker;
 class UAbilitySystemComponent;
@@ -100,11 +100,11 @@ public:
 
 	AFICharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
-	// UFUNCTION(BlueprintCallable, Category = "Lyra|Character")
-	// ALyraPlayerController* GetLyraPlayerController() const;
-	//
-	// UFUNCTION(BlueprintCallable, Category = "Lyra|Character")
-	// ALyraPlayerState* GetLyraPlayerState() const;
+	UFUNCTION(BlueprintCallable, Category = "Lyra|Character")
+	ALyraPlayerController* GetLyraPlayerController() const;
+	
+	UFUNCTION(BlueprintCallable, Category = "Lyra|Character")
+	ALyraPlayerState* GetLyraPlayerState() const;
 
 	UFUNCTION(BlueprintCallable, Category = "Lyra|Character")
 	UFIAbilitySystemComponent* GetFIAbilitySystemComponent() const;

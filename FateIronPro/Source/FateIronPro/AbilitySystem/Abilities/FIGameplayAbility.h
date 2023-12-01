@@ -12,16 +12,16 @@ struct FGameplayAbilitySpecHandle;
 
 class AActor;
 class AController;
-// class ALyraCharacter;
-// class ALyraPlayerController;
+class AFICharacter;
+class ALyraPlayerController;
 class APlayerController;
 class FText;
-// class ILyraAbilitySourceInterface;
+class IFIAbilitySourceInterface;
 class UAnimMontage;
 class UFIAbilityCost;
 class UFIAbilitySystemComponent;
-// class ULyraCameraMode;
-// class ULyraHeroComponent;
+class UFICameraMode;
+class UFIHeroComponent;
 class UObject;
 struct FFrame;
 struct FGameplayAbilityActorInfo;
@@ -104,17 +104,17 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Lyra|Ability")
 	UFIAbilitySystemComponent* GetLyraAbilitySystemComponentFromActorInfo() const;
 
-	// UFUNCTION(BlueprintCallable, Category = "Lyra|Ability")
-	// ALyraPlayerController* GetLyraPlayerControllerFromActorInfo() const;
+	UFUNCTION(BlueprintCallable, Category = "Lyra|Ability")
+	ALyraPlayerController* GetLyraPlayerControllerFromActorInfo() const;
 
 	UFUNCTION(BlueprintCallable, Category = "Lyra|Ability")
 	AController* GetControllerFromActorInfo() const;
 
-	// UFUNCTION(BlueprintCallable, Category = "Lyra|Ability")
-	// ALyraCharacter* GetLyraCharacterFromActorInfo() const;
+	UFUNCTION(BlueprintCallable, Category = "Lyra|Ability")
+	AFICharacter* GetLyraCharacterFromActorInfo() const;
 
-	// UFUNCTION(BlueprintCallable, Category = "Lyra|Ability")
-	// ULyraHeroComponent* GetHeroComponentFromActorInfo() const;
+	UFUNCTION(BlueprintCallable, Category = "Lyra|Ability")
+	UFIHeroComponent* GetHeroComponentFromActorInfo() const;
 
 	EFIAbilityActivationPolicy GetActivationPolicy() const { return ActivationPolicy; }
 	EFIAbilityActivationGroup GetActivationGroup() const { return ActivationGroup; }
@@ -129,13 +129,13 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure = false, Category = "Lyra|Ability", Meta = (ExpandBoolAsExecs = "ReturnValue"))
 	bool ChangeActivationGroup(EFIAbilityActivationGroup NewGroup);
 
-	// // Sets the ability's camera mode.
-	// UFUNCTION(BlueprintCallable, Category = "Lyra|Ability")
-	// void SetCameraMode(TSubclassOf<ULyraCameraMode> CameraMode);
+	// Sets the ability's camera mode.
+	UFUNCTION(BlueprintCallable, Category = "Lyra|Ability")
+	void SetCameraMode(TSubclassOf<UFICameraMode> CameraMode);
 
-	// // Clears the ability's camera mode.  Automatically called if needed when the ability ends.
-	// UFUNCTION(BlueprintCallable, Category = "Lyra|Ability")
-	// void ClearCameraMode();
+	// Clears the ability's camera mode.  Automatically called if needed when the ability ends.
+	UFUNCTION(BlueprintCallable, Category = "Lyra|Ability")
+	void ClearCameraMode();
 
 	void OnAbilityFailedToActivate(const FGameplayTagContainer& FailedReason) const
 	{
@@ -168,7 +168,7 @@ protected:
 
 	virtual void OnPawnAvatarSet();
 
-	//virtual void GetAbilitySource(FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, float& OutSourceLevel, const ILyraAbilitySourceInterface*& OutAbilitySource, AActor*& OutEffectCauser) const;
+	virtual void GetAbilitySource(FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, float& OutSourceLevel, const IFIAbilitySourceInterface*& OutAbilitySource, AActor*& OutEffectCauser) const;
 
 	/** Called when this ability is granted to the ability system component. */
 	UFUNCTION(BlueprintImplementableEvent, Category = Ability, DisplayName = "OnAbilityAdded")
@@ -208,6 +208,6 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Advanced")
 	bool bLogCancelation;
 
-	// // Current camera mode set by the ability.
-	// TSubclassOf<ULyraCameraMode> ActiveCameraMode;
+	// Current camera mode set by the ability.
+	TSubclassOf<UFICameraMode> ActiveCameraMode;
 };

@@ -13,12 +13,11 @@
 // #include "Player/LyraPlayerState.h"
 // #include "Player/LyraLocalPlayer.h"
 
-
 #include "Components/GameFrameworkComponentManager.h"
 #include "PlayerMappableInputConfig.h"
-//#include "Camera/LyraCameraMode.h"
 #include "UserSettings/EnhancedInputUserSettings.h"
 #include "InputMappingContext.h"
+#include "Camera/FICameraMode.h"
 #include "FateIronPro/FIGameplayTags.h"
 #include "FateIronPro/FILogChannels.h"
 #include "FateIronPro/AbilitySystem/FIAbilitySystemComponent.h"
@@ -496,21 +495,21 @@ void UFIHeroComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 // 	return nullptr;
 // }
 //
-// void UFIHeroComponent::SetAbilityCameraMode(TSubclassOf<ULyraCameraMode> CameraMode, const FGameplayAbilitySpecHandle& OwningSpecHandle)
-// {
-// 	if (CameraMode)
-// 	{
-// 		AbilityCameraMode = CameraMode;
-// 		AbilityCameraModeOwningSpecHandle = OwningSpecHandle;
-// 	}
-// }
-//
-// void UFIHeroComponent::ClearAbilityCameraMode(const FGameplayAbilitySpecHandle& OwningSpecHandle)
-// {
-// 	if (AbilityCameraModeOwningSpecHandle == OwningSpecHandle)
-// 	{
-// 		AbilityCameraMode = nullptr;
-// 		AbilityCameraModeOwningSpecHandle = FGameplayAbilitySpecHandle();
-// 	}
-// }
+void UFIHeroComponent::SetAbilityCameraMode(TSubclassOf<UFICameraMode> CameraMode, const FGameplayAbilitySpecHandle& OwningSpecHandle)
+{
+	if (CameraMode)
+	{
+		AbilityCameraMode = CameraMode;
+		AbilityCameraModeOwningSpecHandle = OwningSpecHandle;
+	}
+}
+
+void UFIHeroComponent::ClearAbilityCameraMode(const FGameplayAbilitySpecHandle& OwningSpecHandle)
+{
+	if (AbilityCameraModeOwningSpecHandle == OwningSpecHandle)
+	{
+		AbilityCameraMode = nullptr;
+		AbilityCameraModeOwningSpecHandle = FGameplayAbilitySpecHandle();
+	}
+}
 

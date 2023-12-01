@@ -14,7 +14,7 @@ struct FMappableConfigPair;
 
 class UGameFrameworkComponentManager;
 class UInputComponent;
-// class ULyraCameraMode;
+class UFICameraMode;
 class UFIInputConfig;
 class UObject;
 struct FActorInitStateChangedParams;
@@ -39,8 +39,8 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Lyra|Hero")
 	static UFIHeroComponent* FindHeroComponent(const AActor* Actor) { return (Actor ? Actor->FindComponentByClass<UFIHeroComponent>() : nullptr); }
 
-	// /** Overrides the camera from an active gameplay ability */
-	// void SetAbilityCameraMode(TSubclassOf<ULyraCameraMode> CameraMode, const FGameplayAbilitySpecHandle& OwningSpecHandle);
+	/** Overrides the camera from an active gameplay ability */
+	void SetAbilityCameraMode(TSubclassOf<UFICameraMode> CameraMode, const FGameplayAbilitySpecHandle& OwningSpecHandle);
 
 	/** Clears the camera override if it is set */
 	void ClearAbilityCameraMode(const FGameplayAbilitySpecHandle& OwningSpecHandle);
@@ -85,7 +85,7 @@ protected:
 	// void Input_Crouch(const FInputActionValue& InputActionValue);
 	// void Input_AutoRun(const FInputActionValue& InputActionValue);
 
-	//TSubclassOf<ULyraCameraMode> DetermineCameraMode() const;
+	TSubclassOf<UFICameraMode> DetermineCameraMode() const;
 	
 	// void OnInputConfigActivated(const FLoadedMappableConfigPair& ConfigPair);
 	// void OnInputConfigDeactivated(const FLoadedMappableConfigPair& ConfigPair);
@@ -107,10 +107,10 @@ protected:
 	
 	// UPROPERTY(EditAnywhere)
 	// TArray<FInputMappingContextAndPriority> DefaultInputMappings;
-	//
-	// /** Camera mode set by an ability. */
-	// UPROPERTY()
-	// TSubclassOf<ULyraCameraMode> AbilityCameraMode;
+	
+	/** Camera mode set by an ability. */
+	UPROPERTY()
+	TSubclassOf<UFICameraMode> AbilityCameraMode;
 
 	/** Spec handle for the last ability to set a camera mode. */
 	FGameplayAbilitySpecHandle AbilityCameraModeOwningSpecHandle;

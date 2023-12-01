@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "CommonUserSubsystem.h"
 #include "ModularGameMode.h"
 
 #include "FIDungeonGameMode.generated.h"
@@ -80,6 +81,6 @@ protected:
 	bool TryDedicatedServerLogin();
 	void HostDedicatedServerMatch(ECommonSessionOnlineMode OnlineMode);
 	
-	//UFUNCTION()
-	//void OnUserInitializedForDedicatedServer(const UCommonUserInfo* UserInfo, bool bSuccess, FText Error, ECommonUserPrivilege RequestedPrivilege, ECommonUserOnlineContext OnlineContext);
+	UFUNCTION()
+	void OnUserInitializedForDedicatedServer(const UCommonUserInfo* UserInfo, bool bSuccess, FText Error, ECommonUserPrivilege RequestedPrivilege, ECommonUserOnlineContext OnlineContext);
 };
