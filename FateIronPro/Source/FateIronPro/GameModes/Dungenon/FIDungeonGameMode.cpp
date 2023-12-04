@@ -30,6 +30,7 @@
 #include "GameMapsSettings.h"
 #include "Character/FICharacter.h"
 #include "Character/FIPawnData.h"
+#include "Development/LyraDeveloperSettings.h"
 #include "FateIronPro/FILogChannels.h"
 #include "Player/Dungenon/LyraPlayerController.h"
 #include "Player/Dungenon/LyraPlayerState.h"
@@ -117,7 +118,7 @@ void AFIDungeonGameMode::HandleMatchAssignmentIfNotExpectingOne()
 	
 	if (!ExperienceId.IsValid() && World->IsPlayInEditor())
 	{
-		//ExperienceId = GetDefault<ULyraDeveloperSettings>()->ExperienceOverride;
+		ExperienceId = GetDefault<ULyraDeveloperSettings>()->ExperienceOverride;
 		ExperienceIdSource = TEXT("DeveloperSettings");
 	}
 	
@@ -136,16 +137,7 @@ void AFIDungeonGameMode::HandleMatchAssignmentIfNotExpectingOne()
 		}
 	}
 	
-	// see if the world settings has a default experience
-	// if (!ExperienceId.IsValid())
-	// {
-	// 	if (ALyraWorldSettings* TypedWorldSettings = Cast<ALyraWorldSettings>(GetWorldSettings()))
-	// 	{
-	// 		ExperienceId = TypedWorldSettings->GetDefaultGameplayExperience();
-	// 		ExperienceIdSource = TEXT("WorldSettings");
-	// 	}
-	// }
-	//
+	
 	UFIAssetManager& AssetManager = UFIAssetManager::Get();
 	FAssetData Dummy;
 	if (ExperienceId.IsValid() && !AssetManager.GetPrimaryAssetData(ExperienceId, /*out*/ Dummy))
@@ -164,7 +156,7 @@ void AFIDungeonGameMode::HandleMatchAssignmentIfNotExpectingOne()
 		}
 	
 		//@TODO: Pull this from a config setting or something
-		ExperienceId = FPrimaryAssetId(FPrimaryAssetType("LyraExperienceDefinition"), FName("B_LyraDefaultExperience"));
+		ExperienceId = FPrimaryAssetId(FPrimaryAssetType("FIExperienceDefinition"), FName("B_LyraDefaultExperience"));
 		ExperienceIdSource = TEXT("Default");
 	}
 	
@@ -464,8 +456,8 @@ void AFIDungeonGameMode::InitGameState()
 
 	// Listen for the experience load to complete	
 	//ULyraExperienceManagerComponent* ExperienceComponent = GameState->FindComponentByClass<ULyraExperienceManagerComponent>();
-//	check(ExperienceComponent);
-//	ExperienceComponent->CallOrRegister_OnExperienceLoaded(FOnLyraExperienceLoaded::FDelegate::CreateUObject(this, &ThisClass::OnExperienceLoaded));
+	//check(ExperienceComponent);
+	//ExperienceComponent->CallOrRegister_OnExperienceLoaded(FOnLyraExperienceLoaded::FDelegate::CreateUObject(this, &ThisClass::OnExperienceLoaded));
 }
 
 void AFIDungeonGameMode::GenericPlayerInitialization(AController* NewPlayer)

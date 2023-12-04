@@ -33,7 +33,7 @@ static FAutoConsoleCommand CVarDumpLoadedAssets(
 
 UFIAssetManager::UFIAssetManager()
 {
-	//DefaultPawnData = nullptr;
+	DefaultPawnData = nullptr;
 }
 
 UFIAssetManager& UFIAssetManager::Get()
@@ -137,8 +137,8 @@ const UFIGameData& UFIAssetManager::GetGameData()
 
 const UFIPawnData* UFIAssetManager::GetDefaultPawnData() const
 {
-	return nullptr;
 	//return GetAsset(DefaultPawnData);
+	return nullptr;
 }
 
 UPrimaryDataAsset* UFIAssetManager::LoadGameDataOfClass(TSubclassOf<UPrimaryDataAsset> DataClass, const TSoftObjectPtr<UPrimaryDataAsset>& DataClassPath, FPrimaryAssetType PrimaryAssetType)

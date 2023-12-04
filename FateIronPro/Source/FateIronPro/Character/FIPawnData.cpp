@@ -9,6 +9,6 @@ UFIPawnData::UFIPawnData(const FObjectInitializer& ObjectInitializer)
 {
 	PawnClass = nullptr;
 	InputConfig = nullptr;
-	//DefaultCameraMode = nullptr;
+	DefaultCameraMode = nullptr;
 }
 
