@@ -2,6 +2,7 @@
 
 #include "FIAbilitySystemGlobals.h"
 
+#include "FIGameplayEffectContext.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(FIAbilitySystemGlobals)
 
@@ -14,7 +15,6 @@ UFIAbilitySystemGlobals::UFIAbilitySystemGlobals(const FObjectInitializer& Objec
 
 FGameplayEffectContext* UFIAbilitySystemGlobals::AllocGameplayEffectContext() const
 {
-	//return new FFIGameplayEffectContext();
-	return nullptr;
+	return new FFIGameplayEffectContext();
 }
 

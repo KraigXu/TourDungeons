@@ -5,6 +5,7 @@
 #include "FIGameplayTags.h"
 #include "FILogChannels.h"
 #include "AbilitySystem/FIAbilitySystemComponent.h"
+#include "Character/FIHealthComponent.h"
 #include "Trace/Trace.inl"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(LyraGameplayAbility_Death)
@@ -67,23 +68,23 @@ void ULyraGameplayAbility_Death::EndAbility(const FGameplayAbilitySpecHandle Han
 
 void ULyraGameplayAbility_Death::StartDeath()
 {
-	// if (ULyraHealthComponent* HealthComponent = ULyraHealthComponent::FindHealthComponent(GetAvatarActorFromActorInfo()))
- //     	{
- //     		if (HealthComponent->GetDeathState() == ELyraDeathState::NotDead)
- //     		{
- //     			HealthComponent->StartDeath();
- //     		}
- //     	}
+	 if (UFIHealthComponent* HealthComponent = UFIHealthComponent::FindHealthComponent(GetAvatarActorFromActorInfo()))
+	  	{
+	  		if (HealthComponent->GetDeathState() == ELyraDeathState::NotDead)
+	  		{
+	  			HealthComponent->StartDeath();
+	  		}
+	  	}
 }
 
 void ULyraGameplayAbility_Death::FinishDeath()
 {
-	// if (ULyraHealthComponent* HealthComponent = ULyraHealthComponent::FindHealthComponent(GetAvatarActorFromActorInfo()))
-	// {
-	// 	if (HealthComponent->GetDeathState() == ELyraDeathState::DeathStarted)
-	// 	{
-	// 		HealthComponent->FinishDeath();
-	// 	}
-	// }
+	if (UFIHealthComponent* HealthComponent = UFIHealthComponent::FindHealthComponent(GetAvatarActorFromActorInfo()))
+	{
+		if (HealthComponent->GetDeathState() == ELyraDeathState::DeathStarted)
+		{
+			HealthComponent->FinishDeath();
+		}
+	}
 }
 
