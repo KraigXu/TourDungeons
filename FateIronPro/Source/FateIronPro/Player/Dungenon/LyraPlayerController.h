@@ -10,7 +10,7 @@
 
 struct FGenericTeamId;
 
-class ALyraHUD;
+class AFIDungeonHUD;
 class ALyraPlayerState;
 class APawn;
 class APlayerState;
@@ -43,7 +43,7 @@ public:
 	UFIAbilitySystemComponent* GetLyraAbilitySystemComponent() const;
 
 	// UFUNCTION(BlueprintCallable, Category = "Lyra|PlayerController")
-	// ALyraHUD* GetLyraHUD() const;
+	// AFIDungeonHUD* GetLyraHUD() const;
 
 	// Call from game state logic to start recording an automatic client replay if ShouldRecordClientReplay returns true
 	UFUNCTION(BlueprintCallable, Category = "Lyra|PlayerController")

@@ -1,16 +1,17 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "FIAssetManager.h"
+#include "FateIronPro/FILogChannels.h"
+#include "FIGameplayTags.h"
 #include "FIGameData.h"
 #include "AbilitySystemGlobals.h"
-
+#include "Character/FIPawnData.h"
 #include "Misc/App.h"
 #include "Stats/StatsMisc.h"
 #include "Engine/Engine.h"
 //#include "AbilitySystem/LyraGameplayCueManager.h"
-#include "FateIronPro/FILogChannels.h"
 #include "Misc/ScopedSlowTask.h"
-//#include "System/LyraAssetManagerStartupJob.h"
+#include "System/FIAssetManagerStartupJob.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(FIAssetManager)
 
@@ -45,7 +46,7 @@ UFIAssetManager& UFIAssetManager::Get()
 		return *Singleton;
 	}
 
-	UE_LOG(LogFI,Log,  TEXT("Invalid AssetManagerClassName in DefaultEngine.ini.  It must be set to LyraAssetManager!"));
+	UE_LOG(LogFI,Fatal,  TEXT("Invalid AssetManagerClassName in DefaultEngine.ini.  It must be set to LyraAssetManager!"));
 
 	// Fatal error above prevents this from being called.
 	return *NewObject<UFIAssetManager>();
@@ -137,8 +138,7 @@ const UFIGameData& UFIAssetManager::GetGameData()
 
 const UFIPawnData* UFIAssetManager::GetDefaultPawnData() const
 {
-	//return GetAsset(DefaultPawnData);
-	return nullptr;
+	return GetAsset(DefaultPawnData);
 }
 
 UPrimaryDataAsset* UFIAssetManager::LoadGameDataOfClass(TSubclassOf<UPrimaryDataAsset> DataClass, const TSoftObjectPtr<UPrimaryDataAsset>& DataClassPath, FPrimaryAssetType PrimaryAssetType)

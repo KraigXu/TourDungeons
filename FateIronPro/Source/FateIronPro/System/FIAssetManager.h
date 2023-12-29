@@ -84,15 +84,15 @@ protected:
 	// Global game data asset to use.
 	UPROPERTY(Config)
 	TSoftObjectPtr<UFIGameData> LyraGameDataPath;
-
-	// Loaded version of the game data
-	UPROPERTY(Transient)
-	TMap<TObjectPtr<UClass>, TObjectPtr<UPrimaryDataAsset>> GameDataMap;
-
+	
 	// Pawn data used when spawning player pawns if there isn't one set on the player state.
 	UPROPERTY(Config)
 	TSoftObjectPtr<UFIPawnData> DefaultPawnData;
 
+	// Loaded version of the game data
+	UPROPERTY(Transient)
+	TMap<TObjectPtr<UClass>, TObjectPtr<UPrimaryDataAsset>> GameDataMap;
+	
 private:
 	// Flushes the StartupJobs array. Processes all startup work.
 	void DoAllStartupJobs();

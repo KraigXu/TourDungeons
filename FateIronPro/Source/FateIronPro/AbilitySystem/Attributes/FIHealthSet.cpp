@@ -63,6 +63,14 @@ void UFIHealthSet::OnRep_MaxHealth(const FGameplayAttributeData& OldValue)
 	OnMaxHealthChanged.Broadcast(nullptr, nullptr, nullptr, GetMaxHealth() - OldValue.GetCurrentValue(), OldValue.GetCurrentValue(), GetMaxHealth());
 }
 
+void UFIHealthSet::OnRep_Shield(const FGameplayAttributeData& OldValue)
+{
+}
+
+void UFIHealthSet::OnRep_MaxShield(const FGameplayAttributeData& OldValue)
+{
+}
+
 bool UFIHealthSet::PreGameplayEffectExecute(FGameplayEffectModCallbackData &Data)
 {
 	if (!Super::PreGameplayEffectExecute(Data))

@@ -23,18 +23,21 @@
 // #include "Development/LyraDeveloperSettings.h"
 // #include "Player/LyraPlayerSpawningManagerComponent.h"
 // #include "CommonUserSubsystem.h"
-// #include "CommonSessionSubsystem.h"
+#include "CommonSessionSubsystem.h"
 #include "FIDungeonModeManagerComponent.h"
 #include "FIExperienceDefinition.h"
 #include "TimerManager.h"
 #include "GameMapsSettings.h"
 #include "Character/FICharacter.h"
 #include "Character/FIPawnData.h"
+#include "Character/FIPawnExtensionComponent.h"
 #include "Development/LyraDeveloperSettings.h"
 #include "FateIronPro/FILogChannels.h"
+#include "GameFramework/GameSession.h"
 #include "Player/Dungenon/LyraPlayerController.h"
 #include "Player/Dungenon/LyraPlayerState.h"
 #include "System/FIAssetManager.h"
+#include "UI/Dungeon/FIDungeonHUD.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(FIDungeonGameMode)
 
@@ -42,12 +45,12 @@ AFIDungeonGameMode::AFIDungeonGameMode(const FObjectInitializer& ObjectInitializ
 	: Super(ObjectInitializer)
 {
 	GameStateClass = AFIDungeonGameState::StaticClass();
-	//GameSessionClass = ALyraGameSession::StaticClass();
+	GameSessionClass = AGameSession::StaticClass();
 	PlayerControllerClass = ALyraPlayerController::StaticClass();
 	ReplaySpectatorPlayerControllerClass = ALyraReplayPlayerController::StaticClass();
 	PlayerStateClass = ALyraPlayerState::StaticClass();
 	DefaultPawnClass = AFICharacter::StaticClass();
-	//HUDClass = ALyraHUD::StaticClass();
+	HUDClass = AFIDungeonHUD::StaticClass();
 }
 
 const UFIPawnData* AFIDungeonGameMode::GetPawnDataForController(const AController* InController) const
@@ -55,13 +58,13 @@ const UFIPawnData* AFIDungeonGameMode::GetPawnDataForController(const AControlle
 	// See if pawn data is already set on the player state
 	if (InController != nullptr)
 	{
-		// if (const ALyraPlayerState* LyraPS = InController->GetPlayerState<ALyraPlayerState>())
-		// {
-		// 	if (const UFIPawnData* PawnData = LyraPS->GetPawnData<UFIPawnData>())
-		// 	{
-		// 		return PawnData;
-		// 	}
-		// }
+		if (const ALyraPlayerState* LyraPS = InController->GetPlayerState<ALyraPlayerState>())
+		{
+			if (const UFIPawnData* PawnData = LyraPS->GetPawnData<UFIPawnData>())
+			{
+				return PawnData;
+			}
+		}
 	}
 
 	// If not, fall back to the the default for the current experience
@@ -88,7 +91,7 @@ const UFIPawnData* AFIDungeonGameMode::GetPawnDataForController(const AControlle
 void AFIDungeonGameMode::InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage)
 {
 	Super::InitGame(MapName, Options, ErrorMessage);
-
+	
 	// Wait for the next frame to give time to initialize startup settings
 	GetWorld()->GetTimerManager().SetTimerForNextTick(this, &ThisClass::HandleMatchAssignmentIfNotExpectingOne);
 }
@@ -99,8 +102,6 @@ void AFIDungeonGameMode::HandleMatchAssignmentIfNotExpectingOne()
 	FString ExperienceIdSource;
 	
 	// Precedence order (highest wins)
-	//  - Matchmaking assignment (if present)
-	//  - URL Options override
 	//  - Developer Settings (PIE only)
 	//  - Command Line override
 	//  - World Settings
@@ -108,7 +109,6 @@ void AFIDungeonGameMode::HandleMatchAssignmentIfNotExpectingOne()
 	//  - Default experience
 	
 	UWorld* World = GetWorld();
-	
 	if (!ExperienceId.IsValid() && UGameplayStatics::HasOption(OptionsString, TEXT("Experience")))
 	{
 		const FString ExperienceFromOptions = UGameplayStatics::ParseOption(OptionsString, TEXT("Experience"));
@@ -126,6 +126,7 @@ void AFIDungeonGameMode::HandleMatchAssignmentIfNotExpectingOne()
 	if (!ExperienceId.IsValid())
 	{
 		FString ExperienceFromCommandLine;
+		UE_LOG(LogFIExperience,Log,TEXT("CommandLine= %s"),FCommandLine::Get());
 		if (FParse::Value(FCommandLine::Get(), TEXT("Experience="), ExperienceFromCommandLine))
 		{
 			ExperienceId = FPrimaryAssetId::ParseTypeAndName(ExperienceFromCommandLine);
@@ -136,7 +137,6 @@ void AFIDungeonGameMode::HandleMatchAssignmentIfNotExpectingOne()
 			ExperienceIdSource = TEXT("CommandLine");
 		}
 	}
-	
 	
 	UFIAssetManager& AssetManager = UFIAssetManager::Get();
 	FAssetData Dummy;
@@ -156,7 +156,7 @@ void AFIDungeonGameMode::HandleMatchAssignmentIfNotExpectingOne()
 		}
 	
 		//@TODO: Pull this from a config setting or something
-		ExperienceId = FPrimaryAssetId(FPrimaryAssetType("FIExperienceDefinition"), FName("B_LyraDefaultExperience"));
+		ExperienceId = FPrimaryAssetId(FPrimaryAssetType("FIExperienceDefinition"), FName("B_FIExperienceDefinition"));
 		ExperienceIdSource = TEXT("Default");
 	}
 	
@@ -185,26 +185,25 @@ bool AFIDungeonGameMode::TryDedicatedServerLogin()
 	//
 	// 	return true;
 	// }
-
 	return false;
 }
 
 void AFIDungeonGameMode::HostDedicatedServerMatch(ECommonSessionOnlineMode OnlineMode)
 {
-	// FPrimaryAssetType UserExperienceType = ULyraUserFacingExperienceDefinition::StaticClass()->GetFName();
-	//
-	// // Figure out what UserFacingExperience to load
-	// FPrimaryAssetId UserExperienceId;
-	// FString UserExperienceFromCommandLine;
-	// if (FParse::Value(FCommandLine::Get(), TEXT("UserExperience="), UserExperienceFromCommandLine) ||
-	// 	FParse::Value(FCommandLine::Get(), TEXT("Playlist="), UserExperienceFromCommandLine))
-	// {
-	// 	UserExperienceId = FPrimaryAssetId::ParseTypeAndName(UserExperienceFromCommandLine);
-	// 	if (!UserExperienceId.PrimaryAssetType.IsValid())
-	// 	{
-	// 		UserExperienceId = FPrimaryAssetId(FPrimaryAssetType(UserExperienceType), FName(*UserExperienceFromCommandLine));
-	// 	}
-	// }
+	 // FPrimaryAssetType UserExperienceType = ULyraUserFacingExperienceDefinition::StaticClass()->GetFName();
+	 //
+	 // // Figure out what UserFacingExperience to load
+	 // FPrimaryAssetId UserExperienceId;
+	 // FString UserExperienceFromCommandLine;
+	 // if (FParse::Value(FCommandLine::Get(), TEXT("UserExperience="), UserExperienceFromCommandLine) ||
+	 // 	FParse::Value(FCommandLine::Get(), TEXT("Playlist="), UserExperienceFromCommandLine))
+	 // {
+	 // 	UserExperienceId = FPrimaryAssetId::ParseTypeAndName(UserExperienceFromCommandLine);
+	 // 	if (!UserExperienceId.PrimaryAssetType.IsValid())
+	 // 	{
+	 // 		UserExperienceId = FPrimaryAssetId(FPrimaryAssetType(UserExperienceType), FName(*UserExperienceFromCommandLine));
+	 // 	}
+	 // }
 
 	// Search for the matching experience, it's fine to force load them because we're in dedicated server startup
 	// ULyraAssetManager& AssetManager = ULyraAssetManager::Get();
@@ -259,33 +258,33 @@ void AFIDungeonGameMode::HostDedicatedServerMatch(ECommonSessionOnlineMode Onlin
 	// 	// 	// This will handle the map travel
 	// 	// }
 	// }
-
 }
-//
-// void AFIDungeonGameMode::OnUserInitializedForDedicatedServer(const UCommonUserInfo* UserInfo, bool bSuccess, FText Error, ECommonUserPrivilege RequestedPrivilege, ECommonUserOnlineContext OnlineContext)
-// {
-// 	// UGameInstance* GameInstance = GetGameInstance();
-// 	// if (GameInstance)
-// 	// {
-// 	// 	// Unbind
-// 	// 	UCommonUserSubsystem* UserSubsystem = GameInstance->GetSubsystem<UCommonUserSubsystem>();
-// 	// 	UserSubsystem->OnUserInitializeComplete.RemoveDynamic(this, &AFIDungeonGameMode::OnUserInitializedForDedicatedServer);
-// 	//
-// 	// 	if (bSuccess)
-// 	// 	{
-// 	// 		// Online login worked, start a full online game
-// 	// 		UE_LOG(LogFIExperience, Log, TEXT("Dedicated server online login succeeded, starting online server"));
-// 	// 		HostDedicatedServerMatch(ECommonSessionOnlineMode::Online);
-// 	// 	}
-// 	// 	else
-// 	// 	{
-// 	// 		// Go ahead and try to host anyway, but without online support
-// 	// 		// This behavior is fairly game specific, but this behavior provides the most flexibility for testing
-// 	// 		UE_LOG(LogFIExperience, Log, TEXT("Dedicated server online login failed, starting LAN-only server"));
-// 	// 		HostDedicatedServerMatch(ECommonSessionOnlineMode::LAN);
-// 	// 	}
-// 	// }
-// }
+
+
+void AFIDungeonGameMode::OnUserInitializedForDedicatedServer(const UCommonUserInfo* UserInfo, bool bSuccess, FText Error, ECommonUserPrivilege RequestedPrivilege, ECommonUserOnlineContext OnlineContext)
+{
+	UGameInstance* GameInstance = GetGameInstance();
+	if (GameInstance)
+	{
+		// Unbind
+		UCommonUserSubsystem* UserSubsystem = GameInstance->GetSubsystem<UCommonUserSubsystem>();
+		UserSubsystem->OnUserInitializeComplete.RemoveDynamic(this, &AFIDungeonGameMode::OnUserInitializedForDedicatedServer);
+	
+		if (bSuccess)
+		{
+			// Online login worked, start a full online game
+			UE_LOG(LogFIExperience, Log, TEXT("Dedicated server online login succeeded, starting online server"));
+			HostDedicatedServerMatch(ECommonSessionOnlineMode::Online);
+		}
+		else
+		{
+			// Go ahead and try to host anyway, but without online support
+			// This behavior is fairly game specific, but this behavior provides the most flexibility for testing
+			UE_LOG(LogFIExperience, Log, TEXT("Dedicated server online login failed, starting LAN-only server"));
+			HostDedicatedServerMatch(ECommonSessionOnlineMode::LAN);
+		}
+	}
+}
 
 void AFIDungeonGameMode::OnMatchAssignmentGiven(FPrimaryAssetId ExperienceId, const FString& ExperienceIdSource)
 {
@@ -350,35 +349,34 @@ APawn* AFIDungeonGameMode::SpawnDefaultPawnAtTransform_Implementation(AControlle
 	SpawnInfo.ObjectFlags |= RF_Transient;	// Never save the default player pawns into a map.
 	SpawnInfo.bDeferConstruction = true;
 
-	// if (UClass* PawnClass = GetDefaultPawnClassForController(NewPlayer))
-	// {
-	// 	if (APawn* SpawnedPawn = GetWorld()->SpawnActor<APawn>(PawnClass, SpawnTransform, SpawnInfo))
-	// 	{
-	// 		if (UFIPawnExtensionComponent* PawnExtComp = UFIPawnExtensionComponent::FindPawnExtensionComponent(SpawnedPawn))
-	// 		{
-	// 			if (const UFIPawnData* PawnData = GetPawnDataForController(NewPlayer))
-	// 			{
-	// 				PawnExtComp->SetPawnData(PawnData);
-	// 			}
-	// 			else
-	// 			{
-	// 				UE_LOG(LogFI, Error, TEXT("Game mode was unable to set PawnData on the spawned pawn [%s]."), *GetNameSafe(SpawnedPawn));
-	// 			}
-	// 		}
-	//
-	// 		SpawnedPawn->FinishSpawning(SpawnTransform);
-	//
-	// 		return SpawnedPawn;
-	// 	}
-	// 	else
-	// 	{
-	// 		UE_LOG(LogFI, Error, TEXT("Game mode was unable to spawn Pawn of class [%s] at [%s]."), *GetNameSafe(PawnClass), *SpawnTransform.ToHumanReadableString());
-	// 	}
-	// }
-	// else
-	// {
-	// 	UE_LOG(LogFI, Error, TEXT("Game mode was unable to spawn Pawn due to NULL pawn class."));
-	// }
+	if (UClass* PawnClass = GetDefaultPawnClassForController(NewPlayer))
+	{
+		if (APawn* SpawnedPawn = GetWorld()->SpawnActor<APawn>(PawnClass, SpawnTransform, SpawnInfo))
+		{
+			if (UFIPawnExtensionComponent* PawnExtComp = UFIPawnExtensionComponent::FindPawnExtensionComponent(SpawnedPawn))
+			{
+				if (const UFIPawnData* PawnData = GetPawnDataForController(NewPlayer))
+				{
+					PawnExtComp->SetPawnData(PawnData);
+				}
+				else
+				{
+					UE_LOG(LogFI, Error, TEXT("Game mode was unable to set PawnData on the spawned pawn [%s]."), *GetNameSafe(SpawnedPawn));
+				}
+			}
+			
+			SpawnedPawn->FinishSpawning(SpawnTransform);
+			return SpawnedPawn;
+		}
+		else
+		{
+			UE_LOG(LogFI, Error, TEXT("Game mode was unable to spawn Pawn of class [%s] at [%s]."), *GetNameSafe(PawnClass), *SpawnTransform.ToHumanReadableString());
+		}
+	}
+	else
+	{
+		UE_LOG(LogFI, Error, TEXT("Game mode was unable to spawn Pawn due to NULL pawn class."));
+	}
 
 	return nullptr;
 }

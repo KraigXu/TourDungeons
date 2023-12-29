@@ -36,7 +36,6 @@ UCLASS(HideDropdown,Config = Game, Meta = (ShortTooltip = "The base game mode cl
 class AFIDungeonGameMode : public AModularGameModeBase
 {
 	GENERATED_BODY()
-
 public:
 
 	AFIDungeonGameMode(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
@@ -80,7 +79,9 @@ protected:
 
 	bool TryDedicatedServerLogin();
 	void HostDedicatedServerMatch(ECommonSessionOnlineMode OnlineMode);
+
+public:
+	UFUNCTION()
+	void OnUserInitializedForDedicatedServer(const UCommonUserInfo* UserInfo, bool bSuccess, FText Error, ECommonUserPrivilege RequestedPrivilege, ECommonUserOnlineContext OnlineContext);
 	
-	//UFUNCTION()
-	//void OnUserInitializedForDedicatedServer(const UCommonUserInfo* UserInfo, bool bSuccess, FText Error, ECommonUserPrivilege RequestedPrivilege, ECommonUserOnlineContext OnlineContext);
 };

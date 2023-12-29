@@ -27,6 +27,7 @@ public:
 	UFICombatSet();
 
 	ATTRIBUTE_ACCESSORS(UFICombatSet, BaseDamage);
+	ATTRIBUTE_ACCESSORS(UFICombatSet, DamageType);
 	ATTRIBUTE_ACCESSORS(UFICombatSet, BaseHeal);
 
 protected:
@@ -37,12 +38,25 @@ protected:
 	UFUNCTION()
 	void OnRep_BaseHeal(const FGameplayAttributeData& OldValue);
 
+	UFUNCTION()
+	void OnRep_DamageType(const FGameplayAttributeData& OldValue);
+
+	UFUNCTION()
+	void OnRep_AttackPower(const FGameplayAttributeData& OldValue);
+	
+
 private:
 
 	// The base amount of damage to apply in the damage execution.
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_BaseDamage, Category = "Lyra|Combat", Meta = (AllowPrivateAccess = true))
 	FGameplayAttributeData BaseDamage;
 
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_AttackPower, Category = "Lyra|Combat", Meta = (AllowPrivateAccess = true))
+	FGameplayAttributeData  AttackPower;
+
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_DamageType, Category = "Lyra|Combat", Meta = (AllowPrivateAccess = true))
+	FGameplayAttributeData DamageType;
+	
 	// The base amount of healing to apply in the heal execution.
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_BaseHeal, Category = "Lyra|Combat", Meta = (AllowPrivateAccess = true))
 	FGameplayAttributeData BaseHeal;

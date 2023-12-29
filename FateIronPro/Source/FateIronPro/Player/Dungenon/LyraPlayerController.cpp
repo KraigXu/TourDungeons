@@ -3,7 +3,6 @@
 #include "LyraPlayerController.h"
 #include "CommonInputTypeEnum.h"
 #include "Components/PrimitiveComponent.h"
-// #include "LyraLogChannels.h"
 // #include "LyraCheatManager.h"
 #include "LyraPlayerState.h"
 //#include "Camera/LyraPlayerCameraManager.h"
@@ -136,9 +135,9 @@ UFIAbilitySystemComponent* ALyraPlayerController::GetLyraAbilitySystemComponent(
 	return (LyraPS ? LyraPS->GetLyraAbilitySystemComponent() : nullptr);
 }
 
-// ALyraHUD* ALyraPlayerController::GetLyraHUD() const
+// AFIDungeonHUD* ALyraPlayerController::GetLyraHUD() const
 // {
-// 	return CastChecked<ALyraHUD>(GetHUD(), ECastCheckedType::NullAllowed);
+// 	return CastChecked<AFIDungeonHUD>(GetHUD(), ECastCheckedType::NullAllowed);
 // }
 
 bool ALyraPlayerController::TryToRecordClientReplay()

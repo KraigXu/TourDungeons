@@ -10,7 +10,7 @@ class UObject;
 struct FFrame;
 
 /**
- * ALyraPawn
+ * AFIPawn
  */
 UCLASS()
 class FATEIRONPRO_API AFIPawn : public AModularPawn

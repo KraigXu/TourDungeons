@@ -57,6 +57,12 @@ protected:
 	UFUNCTION()
 	void OnRep_MaxHealth(const FGameplayAttributeData& OldValue);
 
+	UFUNCTION()
+	void OnRep_Shield(const FGameplayAttributeData& OldValue);
+
+	UFUNCTION()
+	void OnRep_MaxShield(const FGameplayAttributeData& OldValue);
+	
 	virtual bool PreGameplayEffectExecute(FGameplayEffectModCallbackData& Data) override;
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 
@@ -76,6 +82,12 @@ private:
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_MaxHealth, Category = "Lyra|Health", Meta = (AllowPrivateAccess = true))
 	FGameplayAttributeData MaxHealth;
 
+	UPROPERTY(BlueprintReadOnly,ReplicatedUsing=OnRep_Shield,Category="FI|Shield",Meta=(HideFromModifiers,AllowPrivateAccess=true))
+	FGameplayAttributeData Shield;
+
+	UPROPERTY(BlueprintReadOnly,ReplicatedUsing=OnRep_MaxShield,Category="FI|Shield",Meta=(AllowPrivateAccess=true))
+	FGameplayAttributeData MaxShield;
+	
 	// Used to track when the health reaches 0.
 	bool bOutOfHealth;
 

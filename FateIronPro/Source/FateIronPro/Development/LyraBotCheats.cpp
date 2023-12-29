@@ -47,10 +47,11 @@ ULyraBotCreationComponent* ULyraBotCheats::GetBotComponent() const
 {
 	if (UWorld* World = GetWorld())
 	{
-		// if (AGameStateBase* GameState = World->GetGameState())
-		// {
-		// 	return GameState->FindComponentByClass<ULyraBotCreationComponent>();
-		// }
+		if (AGameStateBase* GameState = World->GetGameState())
+		{
+			return nullptr;
+			//return GameState->FindComponentByClass<ULyraBotCreationComponent>();
+		}
 	}
 
 	return nullptr;
